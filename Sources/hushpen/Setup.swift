@@ -35,7 +35,7 @@ enum Setup {
             let hasModel = (try? Config.loadModel()) != nil
             let status = """
                 Model: \(hasModel ? "ready" : "missing")
-                Shortcut: \(settings.hotkey)
+                Shortcut: \(settings.hotkeyName)
                 Paste: \(settings.pasteAutomatically ? "automatic" : "clipboard only")
                 Service: \(LaunchAgent.isInstalled ? "on, starts at login" : "off")
                 """
@@ -49,7 +49,7 @@ enum Setup {
                     _ = try Config.verifiedModelDirectory()
                     _ = try LaunchAgent.install(executable: executablePath())
                     show("Dictation is on",
-                         "Press \(settings.hotkey), speak, and press it again. The text is pasted where your cursor is.\n\nmacOS asks for microphone access on the first dictation. For pasting, allow hushpen under System Settings → Privacy & Security → Accessibility.",
+                         "Press \(settings.hotkeyName), speak, and press it again. The text is pasted where your cursor is.\n\nmacOS asks for microphone access on the first dictation. For pasting, allow hushpen under System Settings → Privacy & Security → Accessibility.",
                          ["OK"])
                 case 1: downloadModel()
                 case 2: selectModel()

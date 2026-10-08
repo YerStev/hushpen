@@ -124,7 +124,7 @@ final class HotkeyMonitor {
 
 @MainActor
 final class FnKeyMonitor {
-    static let specification = "fn"
+    nonisolated static let specification = "fn"
     private static let maximumTapSeconds = 0.4
 
     private var monitor: Any?
@@ -134,7 +134,7 @@ final class FnKeyMonitor {
     private let action: @MainActor () -> Void
     private let log: @MainActor (String) -> Void
 
-    static func matches(_ specification: String) -> Bool {
+    nonisolated static func matches(_ specification: String) -> Bool {
         ["fn", "globe", "🌐"].contains(specification.lowercased())
     }
 

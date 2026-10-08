@@ -45,6 +45,13 @@ fi
 echo "==> Starting the service"
 "$BIN" --install-agent >/dev/null
 HOTKEY=$("$BIN" --verify | sed -nE 's/^Hotkey: +//p')
+FN_NOTE=""
+if [ "$HOTKEY" = "fn" ] && [ "$(defaults read com.apple.HIToolbox AppleFnUsageType 2>/dev/null || echo 1)" != "0" ]; then
+    FN_NOTE="
+Your Fn (🌐) key currently opens a macOS function. Set System Settings →
+Keyboard → \"Press 🌐 key to\" → Do Nothing, or choose another shortcut below.
+"
+fi
 
 cat <<EOF
 
@@ -57,5 +64,6 @@ Two permissions are still needed, and macOS only lets you grant them yourself:
        launchctl kickstart -k gui/\$(id -u)/io.github.yerstev.hushpen.agent
 
 Use: press $HOTKEY, speak, press it again. The text is pasted at your cursor.
-Change the shortcut with: $BIN --hotkey fn   (or e.g. cmd+shift+d, f18)
+$FN_NOTE
+Change the shortcut with: $BIN --hotkey cmd+shift+d   (or f18, fn)
 EOF

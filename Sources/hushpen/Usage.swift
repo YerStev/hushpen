@@ -1,7 +1,7 @@
 let usageText = """
 hushpen — on-device dictation with the Voz model
 
-Press the shortcut (default ⌘⇧D), speak, press it again. The text is pasted
+Press the shortcut (default Fn), speak, press it again. The text is pasted
 at your cursor. The menu-bar microphone can stop or discard a recording.
 
 SETUP

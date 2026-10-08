@@ -28,7 +28,7 @@ The script builds the app into `~/Applications/hushpen.app`, downloads the model
 and starts a background service that runs at login. Then grant two permissions,
 which macOS only lets you do yourself:
 
-1. **Microphone**: press the shortcut once and allow access.
+1. **Microphone**: press Fn once and allow access.
 2. **Accessibility** (for pasting): System Settings → Privacy & Security →
    Accessibility → turn on hushpen. Then restart the service:
    `launchctl kickstart -k gui/$(id -u)/io.github.yerstev.hushpen.agent`
@@ -38,10 +38,13 @@ paste it with ⌘V.
 
 ## Use
 
-- Press **⌘⇧D** to start, speak, press **⌘⇧D** to stop.
+- Press **Fn** (🌐) to start, speak, press **Fn** to stop.
+- For this, set System Settings → Keyboard → "Press 🌐 key to" → **Do Nothing**;
+  otherwise macOS opens its own emoji picker or dictation on Fn.
 - A microphone icon in the menu bar lets you stop or discard a recording.
-- Change the shortcut: `~/Applications/hushpen.app/Contents/MacOS/hushpen --hotkey fn`
-  (or `f18`, `cmd+shift+d`, …), then restart the service.
+- Another shortcut, e.g. for keyboards without Fn:
+  `~/Applications/hushpen.app/Contents/MacOS/hushpen --hotkey cmd+shift+d`
+  (or `f18`, …), then restart the service.
 - Open the app in Finder for settings: model, paste mode, service on/off.
 
 Recognition can mishear names and numbers. Read the text before you send it.

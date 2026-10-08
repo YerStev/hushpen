@@ -56,9 +56,10 @@ The binary is `~/Applications/hushpen.app/Contents/MacOS/hushpen`.
 After changing the shortcut or paste mode, restart the service:
 `launchctl kickstart -k gui/$(id -u)/io.github.yerstev.hushpen.agent`
 
-Shortcut keys: modifiers `cmd`, `shift`, `alt`, `ctrl`; keys a–z, 0–9, space,
-return, tab, escape, f1–f20. Letters need a modifier. For `fn`, set System
-Settings → Keyboard → "Press 🌐 key to" → Do Nothing.
+The default shortcut is `fn`: a tap of Fn/🌐 on its own (Fn combinations with
+other keys are ignored). It needs System Settings → Keyboard → "Press 🌐 key to"
+→ Do Nothing. Other shortcuts: modifiers `cmd`, `shift`, `alt`, `ctrl`; keys
+a–z, 0–9, space, return, tab, escape, f1–f20. Letters need a modifier.
 
 ## Building
 

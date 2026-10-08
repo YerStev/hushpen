@@ -4,7 +4,9 @@ struct Settings: Codable {
     var hotkey: String
     var pasteAutomatically: Bool
 
-    static let `default` = Settings(hotkey: "cmd+shift+d", pasteAutomatically: true)
+    static let `default` = Settings(hotkey: FnKeyMonitor.specification, pasteAutomatically: true)
+
+    var hotkeyName: String { FnKeyMonitor.matches(hotkey) ? "Fn (🌐)" : hotkey }
 }
 
 enum SettingsStore {

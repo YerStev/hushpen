@@ -15,7 +15,7 @@
      `HUSHPEN_SIGN_IDENTITY="<SHA-1>"` for this command, so permissions
      survive later rebuilds.
 3. Ask the user to grant the two permissions; macOS does not let you do it:
-   - Microphone: they press the shortcut (default ⌘⇧D) once and click Allow.
+   - Microphone: they press the shortcut (default Fn) once and click Allow.
    - Accessibility, for pasting: open the settings page with
      `open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"`
      and have them turn on hushpen. Then run
@@ -25,9 +25,11 @@
    dictation, `~/Library/Logs/hushpen.log` must not contain "Accessibility
    access is missing".
 
-To change the shortcut: `hushpen --hotkey fn` (or `f18`, `cmd+shift+d`), then
-restart the service as above. For `fn`, the user sets System Settings →
-Keyboard → "Press 🌐 key to" → Do Nothing.
+The default shortcut is Fn. It needs System Settings → Keyboard → "Press 🌐 key
+to" → Do Nothing (`defaults read com.apple.HIToolbox AppleFnUsageType` prints 0);
+the install script warns otherwise. Ask the user to change that setting rather
+than changing it yourself. For keyboards without Fn, set another shortcut with
+`hushpen --hotkey cmd+shift+d` (or `f18`) and restart the service.
 
 ## Working on the code
 

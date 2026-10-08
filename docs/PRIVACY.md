@@ -49,7 +49,7 @@ checks the pinned SDK's network code and report fields before each build.
 - **Microphone**: to record.
 - **Accessibility**: to paste with ⌘V. It allows broad control of other apps;
   hushpen uses it only to send ⌘V. Without it, paste yourself.
-- The ⌘⇧D shortcut registers that one key combination. The Fn shortcut watches
-  modifier keys only, not typed text.
+- The default Fn shortcut watches modifier keys only, not typed text. A key
+  combination such as ⌘⇧D registers only that combination.
 
 Powered by Desert Ant Labs — [desertant.com](https://desertant.com)
