@@ -1,0 +1,23 @@
+# Build output, local apps, model weights and private state are not published.
+.build/
+.swiftpm/
+*.xcodeproj
+*.xcworkspace
+Package.pins
+
+models/
+*.mlmodel
+*.mlmodelc
+*.mlpackage
+*.f16
+*.onnx
+*.safetensors
+*.gguf
+
+hushpen.app/
+*.app/
+
+.hushpen-state/
+measurements/local/
+
+.DS_Store
