@@ -152,7 +152,8 @@ final class FnKeyMonitor {
     }
 
     private func handle(_ rawFlags: NSEvent.ModifierFlags) {
-        let flags = rawFlags.intersection(.deviceIndependentFlagsMask)
+        // Caps Lock is a state, not a held key; it must not block the shortcut.
+        let flags = rawFlags.intersection(.deviceIndependentFlagsMask).subtracting(.capsLock)
         let fnDown = flags.contains(.function)
         defer { isDown = fnDown }
 

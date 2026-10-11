@@ -30,7 +30,8 @@ final class Dictation {
     private let log: (String) -> Void
     private lazy var indicator = SessionIndicator(
         onStop: { [weak self] in Task { await self?.stop() } },
-        onCancel: { [weak self] in self?.cancel() }
+        onCancel: { [weak self] in self?.cancel() },
+        log: { [weak self] in self?.log($0) }
     )
 
     // With paste on, the text is inserted and the clipboard restored; it is

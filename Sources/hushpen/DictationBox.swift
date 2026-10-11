@@ -18,6 +18,9 @@ final class DictationBox {
     private var screenFrame = NSRect.zero
     private var isVisible = false
     private var dismissal: Task<Void, Never>?
+    // Bumped by every show, so a fade-out that is overtaken by a new
+    // dictation does not order the panel out afterwards.
+    private var generation = 0
 
     static let width: CGFloat = 560
     static let margin: CGFloat = 26
@@ -95,10 +98,11 @@ final class DictationBox {
         edge.reset()
         edge.mode = .voice
         layout(animated: false)
-        if !isVisible {
-            panel.alphaValue = 0
-            panel.orderFrontRegardless()
-        }
+        generation += 1
+        if !isVisible { panel.alphaValue = 0 }
+        // Ordered in on every show: cheap when it is already in front, and it
+        // recovers a panel that is no longer on screen.
+        panel.orderFrontRegardless()
         isVisible = true
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.18
@@ -128,12 +132,18 @@ final class DictationBox {
         guard isVisible else { return }
         dismissal?.cancel()
         edge.mode = .off
+        let hiding = generation
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.25
             panel.animator().alphaValue = 0
         } completionHandler: { [weak self] in
-            MainActor.assumeIsolated { self?.finishHiding() }
+            MainActor.assumeIsolated { self?.finishHiding(hiding) }
         }
+    }
+
+    // For the log: whether the panel actually reached the current screen.
+    var isOnScreen: Bool {
+        panel.isVisible && panel.isOnActiveSpace && panel.alphaValue > 0.5
     }
 
     // Paste failed or nothing was recognized; the text, if any, is in the clipboard.
@@ -153,8 +163,8 @@ final class DictationBox {
         }
     }
 
-    private func finishHiding() {
-        guard panel.alphaValue < 0.01 else { return }
+    private func finishHiding(_ hiding: Int) {
+        guard hiding == generation else { return }
         panel.orderOut(nil)
         animation?.invalidate()
         animation = nil

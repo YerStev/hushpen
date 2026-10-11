@@ -9,14 +9,16 @@ final class SessionIndicator {
     private let box = DictationBox()
     private let onStop: () -> Void
     private let onCancel: () -> Void
+    private let log: (String) -> Void
     private var display: Timer?
     private var dismissal: Task<Void, Never>?
     private static let resultSeconds = 1.8
     private static let actionSeconds = 3.5
 
-    init(onStop: @escaping () -> Void, onCancel: @escaping () -> Void) {
+    init(onStop: @escaping () -> Void, onCancel: @escaping () -> Void, log: @escaping (String) -> Void) {
         self.onStop = onStop
         self.onCancel = onCancel
+        self.log = log
     }
 
     func recordingStarted(_ recorder: Recorder, at startedAt: Date) {
@@ -33,6 +35,11 @@ final class SessionIndicator {
         display = timer
         show(.recording(seconds: 0, level: 0))
         box.show()
+        Task { [weak self] in
+            try? await Task.sleep(for: .seconds(0.5))
+            guard let self, self.display != nil, !self.box.isOnScreen else { return }
+            self.log("The dictation box did not appear on the current screen.")
+        }
     }
 
     func liveText(_ text: String) {
