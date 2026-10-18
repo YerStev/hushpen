@@ -38,7 +38,12 @@ final class SessionIndicator {
         Task { [weak self] in
             try? await Task.sleep(for: .seconds(0.5))
             guard let self, self.display != nil, !self.box.isOnScreen else { return }
-            self.log("The dictation box did not appear on the current screen.")
+            self.log("The dictation box did not appear on the current screen (\(self.box.screenReport)); rebuilding it.")
+            self.box.recover()
+            try? await Task.sleep(for: .seconds(0.3))
+            guard self.display != nil else { return }
+            self.log(self.box.isOnScreen ? "The rebuilt dictation box is on screen."
+                                         : "The rebuilt dictation box is still not on screen (\(self.box.screenReport)).")
         }
     }
 
@@ -74,6 +79,22 @@ final class SessionIndicator {
             try? await Task.sleep(for: .seconds(seconds))
             guard !Task.isCancelled, let self else { return }
             if !keepStatus { self.removeStatus() }
+        }
+    }
+
+    // The paste was sent but the text field did not change. The box comes
+    // back for a moment with a hint, as the text would otherwise seem lost.
+    func pasteMissed() {
+        show(.done(manualPaste: true))
+        box.show()
+        box.setText("Not pasted. The text is in the clipboard: press \u{2318}V.")
+        box.transcribing()
+        box.shakeAndDismiss(after: Self.actionSeconds)
+        dismissal?.cancel()
+        dismissal = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(Self.actionSeconds))
+            guard !Task.isCancelled else { return }
+            self?.removeStatus()
         }
     }
 

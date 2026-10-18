@@ -21,9 +21,12 @@ enum Output {
     }
 
     // Pastes the text and restores the previous clipboard afterwards. The text
-    // stays in the clipboard only when pasting is off or not possible.
+    // stays in the clipboard when pasting is off or not possible, and when the
+    // focused text field visibly did not change: then `missed` is called with
+    // a description of the target (no text).
     @discardableResult
-    static func deliverAndPaste(_ text: String, paste: Bool) -> Bool {
+    static func deliverAndPaste(_ text: String, paste: Bool,
+                                missed: @escaping @MainActor (String) -> Void = { _ in }) -> Bool {
         guard paste, Paste.isTrusted else {
             setClipboard(text)
             return false
@@ -37,6 +40,7 @@ enum Output {
         pasteboard.clearContents()
         pasteboard.writeObjects([item])
         let ours = pasteboard.changeCount
+        let before = Paste.Target.current()
 
         guard Paste.sendCommandV() else {
             setClipboard(text)
@@ -44,10 +48,19 @@ enum Output {
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + restoreDelay) {
-            // Leave the clipboard alone if anything was copied in the meantime.
-            guard pasteboard.changeCount == ours else { return }
-            pasteboard.clearContents()
-            if !previous.isEmpty { pasteboard.writeObjects(previous) }
+            MainActor.assumeIsolated {
+                // Leave the clipboard alone if anything was copied in the meantime.
+                guard pasteboard.changeCount == ours else { return }
+                // A field whose length is readable and unchanged did not take
+                // the paste; the text stays in the clipboard so it is not lost.
+                let after = Paste.Target.current()
+                if let count = before.characters, after.characters == count, after.app == before.app {
+                    missed("before: \(before.description); after: \(after.description)")
+                    return
+                }
+                pasteboard.clearContents()
+                if !previous.isEmpty { pasteboard.writeObjects(previous) }
+            }
         }
         return true
     }

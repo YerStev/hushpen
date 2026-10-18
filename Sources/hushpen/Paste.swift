@@ -22,6 +22,42 @@ enum Paste {
         return true
     }
 
+    // The app in front and its focused element, read through Accessibility.
+    // Only the role and the character count are read, never the text.
+    struct Target: Equatable {
+        let app: String
+        let role: String?
+        let characters: Int?
+        let secureInput: Bool
+
+        static func current() -> Target {
+            let app = NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "unknown"
+            let secureInput = IsSecureEventInputEnabled()
+            // Short timeout: a busy app must not stall the service.
+            let systemWide = AXUIElementCreateSystemWide()
+            AXUIElementSetMessagingTimeout(systemWide, 0.25)
+            var focused: CFTypeRef?
+            guard AXUIElementCopyAttributeValue(systemWide,
+                                                kAXFocusedUIElementAttribute as CFString, &focused) == .success,
+                  let focused, CFGetTypeID(focused) == AXUIElementGetTypeID() else {
+                return Target(app: app, role: nil, characters: nil, secureInput: secureInput)
+            }
+            let element = focused as! AXUIElement
+            AXUIElementSetMessagingTimeout(element, 0.25)
+            var role: CFTypeRef?
+            var count: CFTypeRef?
+            AXUIElementCopyAttributeValue(element, kAXRoleAttribute as CFString, &role)
+            AXUIElementCopyAttributeValue(element, kAXNumberOfCharactersAttribute as CFString, &count)
+            return Target(app: app, role: role as? String, characters: (count as? NSNumber)?.intValue,
+                          secureInput: secureInput)
+        }
+
+        var description: String {
+            "app \(app), focused \(role ?? "nothing"), characters \(characters.map(String.init) ?? "unknown"), "
+                + "secure input \(secureInput ? "on" : "off")"
+        }
+    }
+
     static func requestTrust() {
         AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt": true] as CFDictionary)
     }

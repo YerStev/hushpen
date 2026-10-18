@@ -12,10 +12,23 @@ One process, the login service (`hushpen --daemon`, started by
 3. While you speak, the audio after the last settled word is transcribed about
    every 0.7 seconds and shown in the box. Words more than 4 seconds old are
    settled, so each pass stays short while the box shows the whole text.
-4. The second press closes the microphone. The whole recording is transcribed
-   once more; that result is pasted, not the preview.
+4. The second press closes the microphone. The whole recording, followed by
+   0.6 seconds of silence so the last word is not cut off, is transcribed once
+   more; that result is pasted, not the preview.
 5. Pasting: the text goes to the clipboard (marked transient), ⌘V is sent, and
-   the previous clipboard is restored after 0.6 seconds.
+   the previous clipboard is restored after 0.6 seconds. Before and after, the
+   focused element's role and character count are read through Accessibility
+   (never its text). If the count is readable and has not changed, the paste
+   did not arrive: the text stays in the clipboard, the box shows "press ⌘V"
+   and the log notes the app and element.
+
+### The dictation box
+
+A long-lived panel can stop appearing after Space, full-screen or Stage
+Manager changes, while a new panel appears normally. Half a second after each
+start the box checks that it is on the current screen; if not, it moves its
+content to a new panel and logs what it found. `DictationBoxTests` cover this
+and show the box briefly when `check.sh` runs.
 
 There is no socket or other inter-process interface. A lock file prevents a
 second service. Before each recording, the model folder is hashed and compared
@@ -65,7 +78,7 @@ a–z, 0–9, space, return, tab, escape, f1–f20. Letters need a modifier.
 
 ```sh
 ./scripts/install.sh      # build, install, download model, start service
-./scripts/check.sh        # build and policy checks; no microphone, no changes to your setup
+./scripts/check.sh        # build, tests and policy checks; no microphone, no changes to your setup
 ```
 
 Without a certificate the app is signed ad hoc. macOS then ties the

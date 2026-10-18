@@ -186,7 +186,7 @@ case "--transcribe-file":
             fail(ToolError(.failure, "The model expects \(Int(voz.sampleRate)) Hz."))
         }
         do {
-            let result = try await voz.transcribe(samples: samples)
+            let result = try await voz.transcribe(samples: Recorder.withTrailingSilence(samples))
             let text = result.text.trimmingCharacters(in: .whitespacesAndNewlines)
             print(text)
         } catch {

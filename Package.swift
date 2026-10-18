@@ -14,6 +14,11 @@ let package = Package(
             name: "hushpen",
             dependencies: [.product(name: "Voz", package: "desert-ant-core")],
             swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
+        .testTarget(
+            name: "hushpenTests",
+            dependencies: ["hushpen", .product(name: "Voz", package: "desert-ant-core")],
+            swiftSettings: [.swiftLanguageMode(.v6)]
         )
     ]
 )

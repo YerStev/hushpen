@@ -64,7 +64,7 @@ final class Dictation {
             preview?.cancel()
             phase = .transcribing
             indicator.transcribing()
-            let outcome = await Self.transcribe(recorder: recorder, model: model)
+            let outcome = await Self.transcribe(recorder: recorder, model: model, log: log)
             phase = .idle
             deliver(outcome)
         }
@@ -120,7 +120,7 @@ final class Dictation {
         preview?.cancel()
         phase = .transcribing
         indicator.transcribing()
-        let outcome = await Self.transcribe(recorder: recorder, model: model)
+        let outcome = await Self.transcribe(recorder: recorder, model: model, log: log)
         phase = .holding(outcome)
         indicator.finished(outcome, manualPaste: false, keepStatus: true)
         timeout = Task { [weak self] in
@@ -172,7 +172,10 @@ final class Dictation {
             indicator.finished(outcome, manualPaste: false)
             log("Dictation failed: \(error.message)")
         case .success(let text):
-            let manualPaste = !Output.deliverAndPaste(text, paste: paste)
+            let manualPaste = !Output.deliverAndPaste(text, paste: paste) { [weak self] target in
+                self?.log("Paste did not arrive; the text is in the clipboard (\(target)).")
+                self?.indicator.pasteMissed()
+            }
             if paste && manualPaste {
                 log("Automatic paste skipped: Accessibility access is missing. The text is in the clipboard.")
             }
@@ -180,7 +183,8 @@ final class Dictation {
         }
     }
 
-    private static func transcribe(recorder: Recorder, model: Task<Voz, Error>) async -> Result<String, ToolError> {
+    private static func transcribe(recorder: Recorder, model: Task<Voz, Error>,
+                                   log: (String) -> Void) async -> Result<String, ToolError> {
         let samples: [Float]
         do {
             samples = try recorder.stopAndTakeSamples()
@@ -196,9 +200,14 @@ final class Dictation {
 
         do {
             let voz = try await model.value
-            let result = try await voz.transcribe(samples: samples)
+            let result = try await voz.transcribe(samples: Recorder.withTrailingSilence(samples))
             let text = result.text.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !text.isEmpty else {
+                // Length and loudness tell an accidental tap from a muted
+                // microphone; no text is logged.
+                let seconds = Double(samples.count) / Recorder.targetSampleRate
+                let peak = samples.reduce(Float(0)) { max($0, abs($1)) }
+                log(String(format: "No speech in %.1f s of audio (peak level %.3f).", seconds, peak))
                 return .failure(ToolError(.transcription, "No speech was recognized."))
             }
             return .success(text)

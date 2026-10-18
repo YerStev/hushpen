@@ -106,6 +106,12 @@ final class Recorder: @unchecked Sendable {
         return running ? smoothedLevel : 0
     }
 
+    // The model cuts off a last word that ends right at the end of the audio;
+    // a little silence after it lets the word finish.
+    static func withTrailingSilence(_ samples: [Float]) -> [Float] {
+        samples + [Float](repeating: 0, count: Int(targetSampleRate * 0.6))
+    }
+
     func stopAndTakeSamples() throws -> [Float] {
         if running {
             engine.inputNode.removeTap(onBus: 0)

@@ -8,7 +8,7 @@ import AppKit
 final class DictationBox {
     private enum Mode { case listening, speaking, transcribing }
 
-    private let panel: NSPanel
+    private var panel: NSPanel
     private let container: NSView
     private let label: NSTextField
     private let edge = EdgeGlowView()
@@ -33,17 +33,7 @@ final class DictationBox {
 
     init() {
         let size = NSSize(width: Self.width + 2 * Self.margin, height: Self.minHeight + 2 * Self.margin)
-        panel = NSPanel(contentRect: NSRect(origin: .zero, size: size),
-                        styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
-        panel.isFloatingPanel = true
-        panel.level = .statusBar
-        panel.backgroundColor = .clear
-        panel.isOpaque = false
-        panel.hasShadow = false
-        panel.ignoresMouseEvents = true
-        panel.hidesOnDeactivate = false
-        panel.collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary]
-        panel.animationBehavior = .none
+        panel = Self.makePanel(size: size)
 
         container = NSView(frame: NSRect(origin: .zero, size: size))
         container.wantsLayer = true
@@ -141,13 +131,58 @@ final class DictationBox {
         }
     }
 
-    // For the log: whether the panel actually reached the current screen.
+    // Whether the panel actually reached the current screen.
     var isOnScreen: Bool {
         panel.isVisible && panel.isOnActiveSpace && panel.alphaValue > 0.5
     }
 
+    // For the log: which part of isOnScreen failed, and where.
+    var screenReport: String {
+        let front = NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "unknown"
+        return "visible \(panel.isVisible), active space \(panel.isOnActiveSpace), "
+            + String(format: "alpha %.2f, ", panel.alphaValue)
+            + "occluded \(!panel.occlusionState.contains(.visible)), front app \(front)"
+    }
+
+    // A long-lived panel can stop appearing after Space or Stage Manager
+    // changes while a new one appears normally, so the box moves its content
+    // to a new panel.
+    func recover() {
+        guard isVisible else { return }
+        let old = panel
+        panel = Self.makePanel(size: old.frame.size)
+        old.contentView = nil
+        old.orderOut(nil)
+        panel.contentView = container
+        panel.setFrame(old.frame, display: false)
+        panel.alphaValue = 1
+        panel.orderFrontRegardless()
+    }
+
+    #if DEBUG
+    // For tests: the panel drops off screen, as macOS sometimes does.
+    func simulateLostPanel() {
+        panel.orderOut(nil)
+    }
+    #endif
+
+    private static func makePanel(size: NSSize) -> NSPanel {
+        let panel = NSPanel(contentRect: NSRect(origin: .zero, size: size),
+                            styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
+        panel.isFloatingPanel = true
+        panel.level = .statusBar
+        panel.backgroundColor = .clear
+        panel.isOpaque = false
+        panel.hasShadow = false
+        panel.ignoresMouseEvents = true
+        panel.hidesOnDeactivate = false
+        panel.collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary]
+        panel.animationBehavior = .none
+        return panel
+    }
+
     // Paste failed or nothing was recognized; the text, if any, is in the clipboard.
-    func shakeAndDismiss() {
+    func shakeAndDismiss(after seconds: Double = 0.9) {
         guard isVisible else { return }
         edge.mode = .off
         let shake = CAKeyframeAnimation(keyPath: "transform.translation.x")
@@ -157,7 +192,7 @@ final class DictationBox {
         container.layer?.add(shake, forKey: "shake")
         dismissal?.cancel()
         dismissal = Task { [weak self] in
-            try? await Task.sleep(for: .seconds(0.9))
+            try? await Task.sleep(for: .seconds(seconds))
             guard !Task.isCancelled else { return }
             self?.dismiss()
         }
