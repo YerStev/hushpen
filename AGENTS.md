@@ -14,6 +14,14 @@
      (`security find-identity -v -p codesigning`), set
      `HUSHPEN_SIGN_IDENTITY="<SHA-1>"` for this command, so permissions
      survive later rebuilds.
+   - Text cleanup is optional: a local model (Gemma 4 E4B, 5.2 GB download,
+     about 4 GB of memory while loaded) removes fillers and self-corrections
+     and lays out emails before pasting. Ask the user whether they want it.
+     It needs 16 GB of memory (`sysctl -n hw.memsize`) and about 8 GB free
+     disk space (`df -g ~`). If yes, set `HUSHPEN_CLEANUP=1` for the install
+     command; the download takes several minutes and starts over if it is
+     interrupted. To add it later: `hushpen --cleanup-model download`, then
+     `hushpen --cleanup on` and restart the service.
 3. Ask the user to grant the two permissions; macOS does not let you do it:
    - Microphone: they press the shortcut (default Fn) once and click Allow.
    - Accessibility, for pasting: open the settings page with
@@ -21,7 +29,8 @@
      and have them turn on hushpen. Then run
      `launchctl kickstart -k gui/$(id -u)/io.github.yerstev.hushpen.agent`.
 4. Verify: `~/Applications/hushpen.app/Contents/MacOS/hushpen --verify` shows
-   the checksum as "(matches)" and the service as "running". After a test
+   the checksum as "(matches)" and the service as "running", and with cleanup
+   "Cleanup: on" and a registered cleanup model. After a test
    dictation, `~/Library/Logs/hushpen.log` must not contain "Accessibility
    access is missing".
 

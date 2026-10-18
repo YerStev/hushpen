@@ -1,6 +1,7 @@
 #!/bin/bash
 # Build hushpen, install it as ~/Applications/hushpen.app, download the speech
 # model if needed and start the login service. Safe to run again after changes.
+# HUSHPEN_CLEANUP=1 also sets up the optional text cleanup (5.2 GB model).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -42,8 +43,29 @@ else
     "$BIN" --download-model
 fi
 
+if [ "${HUSHPEN_CLEANUP:-0}" = "1" ]; then
+    MEMORY_GB=$(( $(sysctl -n hw.memsize) / 1073741824 ))
+    FREE_GB=$(df -g "$HOME" | awk 'NR==2 { print $4 }')
+    if [ "$MEMORY_GB" -lt 16 ]; then
+        echo "==> Skipping text cleanup: it needs 16 GB of memory, this Mac has $MEMORY_GB GB."
+    elif "$BIN" --verify | grep -q "^Cleanup model: *not registered"; then
+        if [ "$FREE_GB" -lt 8 ]; then
+            echo "==> Skipping text cleanup: the model needs 5.2 GB, only $FREE_GB GB are free."
+        else
+            echo "==> Downloading the cleanup model (5.2 GB)"
+            "$BIN" --cleanup-model download
+            "$BIN" --cleanup on >/dev/null
+        fi
+    else
+        echo "==> Cleanup model already installed"
+        "$BIN" --cleanup on >/dev/null
+    fi
+fi
+
 echo "==> Starting the service"
 "$BIN" --install-agent >/dev/null
+# A running service picks up new settings only after a restart.
+launchctl kickstart -k "gui/$(id -u)/io.github.yerstev.hushpen.agent" >/dev/null 2>&1 || true
 HOTKEY=$("$BIN" --verify | sed -nE 's/^Hotkey: +//p')
 FN_NOTE=""
 if [ "$HOTKEY" = "fn" ] && [ "$(defaults read com.apple.HIToolbox AppleFnUsageType 2>/dev/null || echo 1)" != "0" ]; then
