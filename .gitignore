@@ -21,3 +21,4 @@ hushpen.app/
 measurements/local/
 
 .DS_Store
+__pycache__/

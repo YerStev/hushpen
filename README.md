@@ -49,12 +49,38 @@ paste it with ⌘V.
 
 Recognition can mishear names and numbers. Read the text before you send it.
 
+### Text cleanup (optional)
+
+A second local model can tidy up what you said before it is pasted. Just
+speak naturally:
+
+- filler sounds ("äh", "ähm") are removed,
+- "am Dienstag, nein, am Mittwoch" becomes "am Mittwoch",
+- "Ach, vergiss den letzten Satz" removes the sentence before it,
+- "Okay, nochmal von vorne" keeps only what follows,
+- "besser gesagt …" keeps the better phrasing,
+- an email with greeting and sign-off gets its line breaks.
+
+It is off by default because the model (Gemma 4 E4B, Apache 2.0) is 5.2 GB and
+uses about 4 GB of memory while loaded. It loads when you start dictating and
+is unloaded after 10 minutes without a dictation. It adds about 0.3–2 seconds.
+When in doubt, for example when the result contains a word you never said, the
+transcript is pasted as recognized. The prompts are tuned for German.
+
+```sh
+~/Applications/hushpen.app/Contents/MacOS/hushpen --cleanup-model download
+~/Applications/hushpen.app/Contents/MacOS/hushpen --cleanup on
+launchctl kickstart -k gui/$(id -u)/io.github.yerstev.hushpen.agent
+```
+
 ## What leaves your Mac
 
-hushpen itself makes no network requests. Two things do:
+Apart from downloads you start, only the usage report goes out:
 
 **Model download** (once): the SDK fetches Voz v0.1.0 from huggingface.co and
-checks every file against its SHA-256.
+checks every file against its SHA-256. If you turn on text cleanup,
+`--cleanup-model download` fetches the Gemma model file from huggingface.co
+the same way. Cleanup itself runs on your Mac.
 
 **Usage report**: the Voz SDK reports usage to Desert Ant Labs. This is a
 condition of the model license, so hushpen does not turn it off. A real report:
@@ -104,5 +130,9 @@ under the [Desert Ant Labs Source-Available License 1.0](https://license.deserta
 free below 100,000 monthly active devices per platform and model, outputs may not
 be used to train a competing model, and apps must credit Desert Ant Labs. The
 model is downloaded from its publisher and is not part of this repository.
+
+Text cleanup uses [llama.cpp](https://github.com/ggml-org/llama.cpp) (MIT,
+[license](docs/licenses/LICENSE-llama.cpp.txt), included in the app) and the
+Gemma 4 E4B model by Google (Apache 2.0), which you download separately.
 
 Technical notes: [docs/TECHNICAL.md](docs/TECHNICAL.md).

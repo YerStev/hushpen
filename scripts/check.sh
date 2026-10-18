@@ -59,8 +59,10 @@ rm "$rmdir_dummy/sentinel"
 rmdir "$rmdir_dummy"
 ./scripts/make-app.sh "$CHECK_TMP/hushpen.app"
 codesign --verify --deep --strict "$CHECK_TMP/hushpen.app"
+# The packaged binary finds the embedded llama.cpp framework.
+"$CHECK_TMP/hushpen.app/Contents/MacOS/hushpen" --version | grep -q 'Powered by Desert Ant Labs'
 plutil -lint "$CHECK_TMP/hushpen.app/Contents/Info.plist"
-for notice in LICENSE-hushpen.txt LICENSE-desert-ant-core.md LICENSE-swift-numerics.txt PRIVACY.md; do
+for notice in LICENSE-hushpen.txt LICENSE-desert-ant-core.md LICENSE-swift-numerics.txt LICENSE-llama.cpp.txt PRIVACY.md; do
     test -s "$CHECK_TMP/hushpen.app/Contents/Resources/$notice"
 done
 ./scripts/make-app.sh "$CHECK_TMP/hushpen.app"

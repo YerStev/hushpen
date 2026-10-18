@@ -3,8 +3,23 @@ import Foundation
 struct Settings: Codable {
     var hotkey: String
     var pasteAutomatically: Bool
+    var cleanup: Bool
 
-    static let `default` = Settings(hotkey: FnKeyMonitor.specification, pasteAutomatically: true)
+    static let `default` = Settings(hotkey: FnKeyMonitor.specification, pasteAutomatically: true, cleanup: false)
+
+    init(hotkey: String, pasteAutomatically: Bool, cleanup: Bool) {
+        self.hotkey = hotkey
+        self.pasteAutomatically = pasteAutomatically
+        self.cleanup = cleanup
+    }
+
+    // Settings files written before a field existed keep their other values.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        hotkey = try container.decode(String.self, forKey: .hotkey)
+        pasteAutomatically = try container.decode(Bool.self, forKey: .pasteAutomatically)
+        cleanup = try container.decodeIfPresent(Bool.self, forKey: .cleanup) ?? false
+    }
 
     var hotkeyName: String { FnKeyMonitor.matches(hotkey) ? "Fn (🌐)" : hotkey }
 }

@@ -15,11 +15,17 @@ hushpen 0.3.0
   0.6 seconds later. If pasting is off or fails, the text stays in the clipboard,
   where other apps can read it.
 - The log (`~/Library/Logs/hushpen.log`) records states and errors, never text.
-- `~/Library/Application Support/hushpen` holds settings, the model and a lock file.
+- Text cleanup, if you turn it on, runs on your Mac with llama.cpp and the
+  Gemma model. The text goes to no other process or server.
+- `~/Library/Application Support/hushpen` holds settings, the models and a lock file.
 
 ## Network
 
-hushpen's own code makes no network requests. The Voz SDK does two things:
+hushpen's own code makes one network request, and only when you ask for it:
+`hushpen --cleanup-model download` fetches the Gemma 4 E4B model file
+(`gemma-4-E4B_q4_0-it.gguf`, pinned revision) from huggingface.co and checks
+its SHA-256. The llama.cpp library contains no network code. The Voz SDK does
+two things:
 
 1. **Model download** from huggingface.co when you install or choose
    *Download model*. A Hugging Face token is sent only if you have set `HF_TOKEN`.

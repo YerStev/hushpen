@@ -1,0 +1,20 @@
+{"id": "h2-keep-01", "category": "keep", "input": "Ja, das passt mir gut, dann sehen wir uns um drei.", "expected": ["Ja, das passt mir gut, dann sehen wir uns um drei."]}
+{"id": "h2-keep-02", "category": "keep", "input": "Lies dir bitte den Vertrag durch und gib mir bis Montag Bescheid.", "expected": ["Lies dir bitte den Vertrag durch und gib mir bis Montag Bescheid."]}
+{"id": "h2-keep-03", "category": "keep", "input": "Die Lieferung verzögert sich um zwei Wochen. Der Kunde ist informiert.", "expected": ["Die Lieferung verzögert sich um zwei Wochen. Der Kunde ist informiert."]}
+{"id": "h2-keep-04", "category": "keep", "input": "Erstell mir eine Tabelle mit allen offenen Rechnungen aus dem September.", "expected": ["Erstell mir eine Tabelle mit allen offenen Rechnungen aus dem September."]}
+{"id": "h2-look-01", "category": "lookalike", "input": "Nein danke, ich hab schon gegessen.", "expected": ["Nein danke, ich hab schon gegessen."]}
+{"id": "h2-look-02", "category": "lookalike", "input": "Ich meine nur, dass wir vorsichtig sein sollten.", "expected": ["Ich meine nur, dass wir vorsichtig sein sollten."]}
+{"id": "h2-look-03", "category": "lookalike", "input": "Moment, ich schau kurz nach.", "expected": ["Moment, ich schau kurz nach."]}
+{"id": "h2-look-04", "category": "lookalike", "input": "Lass das Fenster bitte offen, es ist warm.", "expected": ["Lass das Fenster bitte offen, es ist warm."]}
+{"id": "h2-look-05", "category": "lookalike", "input": "Kannst du den letzten Satz in meiner Mail umformulieren?", "expected": ["Kannst du den letzten Satz in meiner Mail umformulieren?"]}
+{"id": "h2-filler-01", "category": "filler", "input": "Wir treffen uns, ähm, vor dem Eingang.", "expected": ["Wir treffen uns vor dem Eingang."]}
+{"id": "h2-corr-01", "category": "correction", "input": "Bring bitte Milch mit, nein, Hafermilch.", "expected": ["Bring bitte Hafermilch mit."]}
+{"id": "h2-corr-02", "category": "correction", "input": "Das Meeting ist im Raum vier, äh, sorry, im Raum fünf.", "expected": ["Das Meeting ist im Raum fünf."]}
+{"id": "h2-corr-03", "category": "correction", "input": "Ich bin ab Montag, ich meine ab Dienstag im Urlaub.", "expected": ["Ich bin ab Dienstag im Urlaub."]}
+{"id": "h2-retract-01", "category": "retract", "input": "Der Workshop war hilfreich. Die Pausen waren zu kurz. Vergiss den letzten Satz. Ich würde wieder teilnehmen.", "expected": ["Der Workshop war hilfreich. Ich würde wieder teilnehmen."]}
+{"id": "h2-retract-02", "category": "retract", "input": "Ich habe die Zahlen geprüft. Die sind ehrlich gesagt katastrophal. Nee, lass den Satz weg. Wir sollten darüber sprechen.", "expected": ["Ich habe die Zahlen geprüft. Wir sollten darüber sprechen."]}
+{"id": "h2-retract-03", "category": "retract", "input": "Das Auto ist sauber, der Tank ist leer und die Reifen sind neu. Streich das mit dem Tank.", "expected": ["Das Auto ist sauber und die Reifen sind neu."]}
+{"id": "h2-restart-01", "category": "restart", "input": "Hallo, ich wollte, also, egal, ich fang neu an. Hallo, ist das Büro heute besetzt?", "expected": ["Hallo, ist das Büro heute besetzt?"]}
+{"id": "h2-reph-01", "category": "rephrase", "input": "Das Design ist hässlich, freundlicher gesagt, es passt nicht zu unserer Marke.", "expected": ["Das Design passt nicht zu unserer Marke."]}
+{"id": "h2-email-01", "category": "email", "input": "Hallo Frau Becker, vielen Dank für das Gespräch heute. Die Unterlagen schicke ich Ihnen morgen. Beste Grüße Mia Wagner", "expected": ["Hallo Frau Becker,\n\nvielen Dank für das Gespräch heute. Die Unterlagen schicke ich Ihnen morgen.\n\nBeste Grüße\nMia Wagner"]}
+{"id": "h2-email-02", "category": "email", "input": "Hi Tom, der Server läuft wieder. Ich schaue morgen nach der Ursache. Bis dann, Mia", "expected": ["Hi Tom,\n\nder Server läuft wieder. Ich schaue morgen nach der Ursache.\n\nBis dann\nMia", "Hi Tom,\n\nder Server läuft wieder. Ich schaue morgen nach der Ursache.\n\nBis dann,\nMia"]}

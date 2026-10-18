@@ -15,12 +15,46 @@ One process, the login service (`hushpen --daemon`, started by
 4. The second press closes the microphone. The whole recording, followed by
    0.6 seconds of silence so the last word is not cut off, is transcribed once
    more; that result is pasted, not the preview.
-5. Pasting: the text goes to the clipboard (marked transient), ⌘V is sent, and
+5. Optional cleanup (`--cleanup on`) by Gemma 4 E4B through llama.cpp, before
+   pasting; see below.
+6. Pasting: the text goes to the clipboard (marked transient), ⌘V is sent, and
    the previous clipboard is restored after 0.6 seconds. Before and after, the
    focused element's role and character count are read through Accessibility
    (never its text). If the count is readable and has not changed, the paste
    did not arrive: the text stays in the clipboard, the box shows "press ⌘V"
    and the log notes the app and element.
+
+### Text cleanup
+
+`TextCleanup.swift` runs the steps measured in `eval/cleanup` (see its README
+for results):
+
+1. The transcript is sent as numbered sentences with `Prompts/cleanup.txt`.
+   The model returns the sentences that remain, edited where needed.
+2. If the result contains a word that is not in the transcript, it is not
+   used.
+3. Text that starts with a greeting and ends with a sign-off and a name gets a
+   second request with `Prompts/layout.txt`. Its result is used only if it has
+   exactly the same words, letter for letter.
+
+`LlamaRunner.swift` wraps the llama.cpp C API (pinned xcframework, release
+b11429, the version the evaluation used). Decoding is greedy, so it matches
+`llama-server` at temperature 0 exactly; `eval/cleanup/run.py --hushpen`
+compares both. Each prompt keeps its own sequence in the context, so its
+instructions are processed once. Tokens are drafted from the dictation itself
+and checked in one step (prompt lookup decoding), which does not change the
+output. Gemma's sliding-window layers use the full-size cache (`swa_full`) so
+tokens can be removed from a sequence.
+
+`CleanupService` loads the model when a recording starts, processes both
+prompts while the user speaks, and unloads it after 10 minutes without a
+dictation. A cleanup that fails or takes more than 10 seconds leaves the
+transcript as it is. The log records the outcome and the time, never text.
+
+The model file is registered with `--cleanup-model download|PATH` and checked
+by SHA-256; its size and modification date are recorded and a changed file is
+hashed again before loading. `--clean-text` cleans each line of standard input
+and prints JSON, for the evaluation.
 
 ### The dictation box
 
@@ -41,6 +75,8 @@ with the hash saved when the model was registered; a changed model is rejected.
 | `main.swift` | Command-line commands |
 | `Daemon.swift` | Login service: shortcut, startup, shutdown |
 | `Dictation.swift` | One recording: start, live preview, stop, paste |
+| `TextCleanup.swift`, `LlamaRunner.swift`, `CleanupService.swift`, `CleanupModel.swift` | Optional text cleanup with llama.cpp |
+| `Prompts/` | Cleanup and layout prompts, shared with `eval/cleanup` |
 | `DictationBox.swift` | On-screen glass box with the live text and voice edge |
 | `ModelHost.swift` | Keeps the verified model loaded |
 | `ModelImport.swift`, `ModelDigest.swift`, `Config.swift` | Model download, checks, registration |
@@ -61,12 +97,15 @@ The binary is `~/Applications/hushpen.app/Contents/MacOS/hushpen`.
 | `--verify` | Show model, settings and service state |
 | `--hotkey SPEC` | Set the shortcut: `cmd+shift+d`, `f18`, `fn`, … |
 | `--paste-mode on\|off` | Paste automatically, or only copy |
+| `--cleanup on\|off` | Text cleanup before pasting (off by default) |
+| `--cleanup-model download\|PATH` | Download or register the cleanup model (5.2 GB) |
+| `--clean-text` | Clean each line of standard input (diagnostic) |
 | `--install-agent` / `--uninstall-agent` | Start or remove the login service |
 | `--transcribe-file FILE` | Transcribe an audio file to stdout |
 | `--daemon` | Run the service in the foreground (for debugging) |
 | `--setup` | Open the setup window |
 
-After changing the shortcut or paste mode, restart the service:
+After changing the shortcut, paste mode or cleanup, restart the service:
 `launchctl kickstart -k gui/$(id -u)/io.github.yerstev.hushpen.agent`
 
 The default shortcut is `fn`: a tap of Fn/🌐 on its own (Fn combinations with

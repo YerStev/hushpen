@@ -94,6 +94,92 @@ case "--hotkey":
         fail(ToolError(.failure, error.localizedDescription))
     }
 
+case "--cleanup":
+    guard arguments.count == 2, let value = arguments.last,
+          value == "on" || value == "off" else {
+        fail(ToolError(.usage, "Usage: hushpen --cleanup on|off"))
+    }
+    if value == "on" && CleanupModel.load() == nil {
+        fail(ToolError(.modelMissing, """
+            Download the cleanup model first (about 5.2 GB):
+              hushpen --cleanup-model download
+            or register a copy you already have:
+              hushpen --cleanup-model /path/to/\(CleanupModel.fileName)
+            """))
+    }
+    do {
+        var settings = SettingsStore.load()
+        settings.cleanup = (value == "on")
+        try SettingsStore.save(settings)
+    } catch {
+        fail(ToolError(.failure, error.localizedDescription))
+    }
+    succeed("""
+        Text cleanup \(value == "on" ? "enabled" : "disabled").
+        Restart the service to apply it:
+          launchctl kickstart -k gui/\(getuid())/\(LaunchAgent.label)
+        """)
+
+case "--cleanup-model":
+    guard arguments.count == 2, let value = arguments.last else {
+        fail(ToolError(.usage, "Usage: hushpen --cleanup-model download|PATH"))
+    }
+    do {
+        let config: CleanupModelConfig
+        if value == "download" {
+            print("Downloading \(CleanupModel.fileName) (5.2 GB) from huggingface.co …")
+            let reporter = ProgressReporter()
+            config = try await CleanupModel.download { reporter.report($0) }
+        } else {
+            print("Checking \(value) …")
+            config = try CleanupModel.register(URL(fileURLWithPath: (value as NSString).expandingTildeInPath))
+        }
+        succeed("""
+            Cleanup model ready: \(config.path)
+            Turn cleanup on with: hushpen --cleanup on
+            """)
+    } catch let error as ToolError {
+        fail(error)
+    } catch {
+        fail(ToolError(.modelMissing, "The cleanup model could not be set up: \(error.localizedDescription)"))
+    }
+
+case "--clean-text":
+    // Diagnostic: cleans each line of standard input and prints one JSON
+    // object per line. Used by eval/cleanup/run.py --engine hushpen.
+    // The model is freed before exit; llama.cpp's Metal backend asserts when
+    // it is still loaded at process exit.
+    func cleanLines(_ runner: LlamaRunner) throws {
+        while let line = readLine() {
+            // As in the service, where this happens while the user speaks.
+            try TextCleanup.warm(runner)
+            let started = Date()
+            let outcome = try TextCleanup.clean(line) { system, user, maxTokens in
+                try runner.generate(system: system, user: user, maxTokens: maxTokens)
+            }
+            let output: String
+            let result: String
+            switch outcome {
+            case .changed(let text): output = text; result = "changed"
+            case .unchanged: output = line; result = "unchanged"
+            case .rejected(let reason): output = line; result = "rejected: " + reason
+            }
+            let object: [String: Any] = ["output": output, "result": result,
+                                         "seconds": Date().timeIntervalSince(started)]
+            let data = try JSONSerialization.data(withJSONObject: object)
+            print(String(decoding: data, as: UTF8.self))
+            fflush(stdout)
+        }
+    }
+    do {
+        try cleanLines(try LlamaRunner(modelPath: try CleanupModel.verifiedPath()))
+        exit(ExitCode.success.rawValue)
+    } catch let error as ToolError {
+        fail(error)
+    } catch {
+        fail(ToolError(.failure, error.localizedDescription))
+    }
+
 case "--paste-mode":
     guard arguments.count == 2, let value = arguments.last,
           value == "on" || value == "off" else {
@@ -219,6 +305,8 @@ case "--verify":
     let settings = SettingsStore.load()
     lines.append(row("Hotkey", settings.hotkey))
     lines.append(row("Paste", settings.pasteAutomatically ? "automatic" : "clipboard only"))
+    lines.append(row("Cleanup", settings.cleanup ? "on" : "off"))
+    lines.append(row("Cleanup model", CleanupModel.load()?.path ?? "not registered"))
     lines.append(row("Service", LaunchAgent.isInstalled
         ? (ServiceLock.isHeldElsewhere ? "running" : "installed, not running")
         : "not installed"))

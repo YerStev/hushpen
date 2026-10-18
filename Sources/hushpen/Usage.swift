@@ -11,11 +11,15 @@ SETUP
   --uninstall-agent        Stop and remove the service
   --hotkey SPEC            Shortcut: cmd+shift+d, f18, fn, ...
   --paste-mode on|off      Paste automatically, or only copy
+  --cleanup on|off         Tidy up the text with a local model (default off)
+  --cleanup-model download|PATH
+                           Download (5.2 GB) or register the cleanup model
   --verify                 Show model, settings and service state
   --setup                  Open the setup window
 
 OTHER
   --transcribe-file FILE   Transcribe an audio file to stdout
+  --clean-text             Clean each line of stdin with the cleanup model
   --daemon                 Run the service in the foreground
   --version, --help
 

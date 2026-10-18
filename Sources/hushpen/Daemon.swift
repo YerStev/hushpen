@@ -9,6 +9,7 @@ final class Daemon: NSObject, NSApplicationDelegate {
     private var fnKey: FnKeyMonitor?
     private var setupProcess: Process?
     private let models = ModelHost()
+    private var cleanup: CleanupService?
     private var dictation: Dictation!
     private var stopping = false
 
@@ -16,7 +17,10 @@ final class Daemon: NSObject, NSApplicationDelegate {
         self.settings = settings
         executable = try executablePath()
         super.init()
-        dictation = Dictation(models: models, paste: settings.pasteAutomatically) { [weak self] in self?.log($0) }
+        if settings.cleanup {
+            cleanup = CleanupService { [weak self] in self?.log($0) }
+        }
+        dictation = Dictation(models: models, paste: settings.pasteAutomatically, cleanup: cleanup) { [weak self] in self?.log($0) }
     }
 
     func run() throws -> Never {
@@ -39,7 +43,7 @@ final class Daemon: NSObject, NSApplicationDelegate {
         installSignalHandling()
         preloadModel()
 
-        log("ready. Hotkey \(settings.hotkey). Paste: \(settings.pasteAutomatically ? "automatic" : "off"). Usage reporting: \(Telemetry.statusText)")
+        log("ready. Hotkey \(settings.hotkey). Paste: \(settings.pasteAutomatically ? "automatic" : "off"). Cleanup: \(settings.cleanup ? "on" : "off"). Usage reporting: \(Telemetry.statusText)")
         if settings.pasteAutomatically && !Paste.isTrusted {
             log("automatic paste is enabled but Accessibility access is missing; requesting permission.")
             Paste.requestTrust()
@@ -115,12 +119,15 @@ final class Daemon: NSObject, NSApplicationDelegate {
         stopping = true
         dictation.cancel()
         let models = self.models
+        let cleanup = self.cleanup
         Task { [weak self] in
             Task.detached {
                 try? await Task.sleep(for: .seconds(8))
                 exit(ExitCode.success.rawValue)
             }
             await models.flushUsage()
+            // llama.cpp's Metal backend must be freed before the process exits.
+            await cleanup?.shutDown()
             self?.log("stopped.")
             exit(ExitCode.success.rawValue)
         }
@@ -128,7 +135,7 @@ final class Daemon: NSObject, NSApplicationDelegate {
 
     private var signalSources: [DispatchSourceSignal] = []
 
-    private func log(_ message: String) {
+    nonisolated private func log(_ message: String) {
         let stamp = ISO8601DateFormatter().string(from: Date())
         FileHandle.standardError.write(Data("[\(stamp)] hushpen: \(message)\n".utf8))
     }

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Assemble and verify a local app before replacing a recognized existing bundle.
-# Linked SDK code is included; model weights are not.
+# Linked SDK code and llama.cpp are included; model weights are not.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -61,15 +61,24 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 PLIST
 
 cp -X "$BINARY" "$APP/Contents/MacOS/hushpen"
+# llama.cpp is a dynamic framework; the binary finds it in Contents/Frameworks.
+mkdir -p "$APP/Contents/Frameworks"
+ditto --norsrc --noextattr .build/release/llama.framework "$APP/Contents/Frameworks/llama.framework"
+install_name_tool -add_rpath @executable_path/../Frameworks "$APP/Contents/MacOS/hushpen"
 
 mkdir -p "$APP/Contents/Resources"
+# The cleanup prompts (Bundle.module looks in Contents/Resources).
+ditto --norsrc --noextattr .build/release/hushpen_hushpen.bundle "$APP/Contents/Resources/hushpen_hushpen.bundle"
 
 cp -X LICENSE "$APP/Contents/Resources/LICENSE-hushpen.txt"
 cp -X .build/checkouts/desert-ant-core/LICENSE.md "$APP/Contents/Resources/LICENSE-desert-ant-core.md"
 cp -X .build/checkouts/swift-numerics/LICENSE.txt "$APP/Contents/Resources/LICENSE-swift-numerics.txt"
+cp -X docs/licenses/LICENSE-llama.cpp.txt "$APP/Contents/Resources/LICENSE-llama.cpp.txt"
 cp -X docs/PRIVACY.md "$APP/Contents/Resources/PRIVACY.md"
 
-codesign --force --deep --sign "${HUSHPEN_SIGN_IDENTITY:--}" --identifier io.github.yerstev.hushpen "$APP"
+# Nested code first, with its own identifier; then the app.
+codesign --force --sign "${HUSHPEN_SIGN_IDENTITY:--}" "$APP/Contents/Frameworks/llama.framework"
+codesign --force --sign "${HUSHPEN_SIGN_IDENTITY:--}" --identifier io.github.yerstev.hushpen "$APP"
 codesign -dv --verbose=2 "$APP" 2>&1 | grep -E "^Identifier|^Signature|flags"
 
 codesign --verify --deep --strict "$APP"

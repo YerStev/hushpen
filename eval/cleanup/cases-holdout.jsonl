@@ -1,0 +1,31 @@
+{"id": "h-keep-01", "category": "keep", "input": "Der Termin beim Zahnarzt ist am Montag um halb neun.", "expected": ["Der Termin beim Zahnarzt ist am Montag um halb neun."]}
+{"id": "h-keep-02", "category": "keep", "input": "Prüf bitte, ob der Build auf dem Hauptzweig noch grün ist.", "expected": ["Prüf bitte, ob der Build auf dem Hauptzweig noch grün ist."]}
+{"id": "h-keep-03", "category": "keep", "input": "Ich hab das Formular ausgefüllt und an die Personalabteilung geschickt.", "expected": ["Ich hab das Formular ausgefüllt und an die Personalabteilung geschickt."]}
+{"id": "h-keep-04", "category": "keep", "input": "Schreib mir eine kurze Zusammenfassung des Artikels in drei Sätzen.", "expected": ["Schreib mir eine kurze Zusammenfassung des Artikels in drei Sätzen."]}
+{"id": "h-keep-05", "category": "keep", "input": "Die Heizung im zweiten Stock funktioniert seit gestern nicht mehr. Kannst du jemanden schicken?", "expected": ["Die Heizung im zweiten Stock funktioniert seit gestern nicht mehr. Kannst du jemanden schicken?"]}
+{"id": "h-keep-06", "category": "keep", "input": "Hast du Lust, am Samstag mit zum Flohmarkt zu kommen?", "expected": ["Hast du Lust, am Samstag mit zum Flohmarkt zu kommen?"]}
+{"id": "h-look-01", "category": "lookalike", "input": "Nein, ich kann am Freitag leider nicht.", "expected": ["Nein, ich kann am Freitag leider nicht."]}
+{"id": "h-look-02", "category": "lookalike", "input": "Vergiss den Schlüssel nicht, wenn du gehst.", "expected": ["Vergiss den Schlüssel nicht, wenn du gehst."]}
+{"id": "h-look-03", "category": "lookalike", "input": "Wir sollten den Absatz über die Kosten streichen, der ist veraltet.", "expected": ["Wir sollten den Absatz über die Kosten streichen, der ist veraltet."]}
+{"id": "h-look-04", "category": "lookalike", "input": "Ich meine es nur gut mit dir.", "expected": ["Ich meine es nur gut mit dir."]}
+{"id": "h-look-05", "category": "lookalike", "input": "Das Programm fängt nach dem Absturz wieder von vorne an.", "expected": ["Das Programm fängt nach dem Absturz wieder von vorne an."]}
+{"id": "h-look-06", "category": "lookalike", "input": "Besser gesagt als getan, aber wir versuchen es.", "expected": ["Besser gesagt als getan, aber wir versuchen es."]}
+{"id": "h-filler-01", "category": "filler", "input": "Ähm, ist das Paket schon da?", "expected": ["Ist das Paket schon da?"]}
+{"id": "h-filler-02", "category": "filler", "input": "Ich glaube, äh, die die Zahlen stimmen nicht.", "expected": ["Ich glaube, die Zahlen stimmen nicht."]}
+{"id": "h-corr-01", "category": "correction", "input": "Ruf bitte bei der Bank an, nein, bei der Versicherung.", "expected": ["Ruf bitte bei der Versicherung an."]}
+{"id": "h-corr-02", "category": "correction", "input": "Wir brauchen zehn, ich meine zwölf Exemplare.", "expected": ["Wir brauchen zwölf Exemplare."]}
+{"id": "h-corr-03", "category": "correction", "input": "Das Kino beginnt um acht, Moment, um Viertel nach acht.", "expected": ["Das Kino beginnt um Viertel nach acht."]}
+{"id": "h-corr-04", "category": "correction", "input": "Die Datei heißt Bericht final, sorry, Bericht final zwei.", "expected": ["Die Datei heißt Bericht final zwei."]}
+{"id": "h-corr-05", "category": "correction", "input": "Ich fahre mit dem Auto, äh nee, mit dem Zug nach Hamburg.", "expected": ["Ich fahre mit dem Zug nach Hamburg."]}
+{"id": "h-retract-01", "category": "retract", "input": "Die Party war super. Der DJ war allerdings furchtbar. Ach, lass den Satz weg. Danke für die Einladung.", "expected": ["Die Party war super. Danke für die Einladung."]}
+{"id": "h-retract-02", "category": "retract", "input": "Ich schicke dir die Daten heute. Wahrscheinlich eher spät, weil ich viel zu tun habe. Nee, streich das wieder.", "expected": ["Ich schicke dir die Daten heute."]}
+{"id": "h-retract-03", "category": "retract", "input": "Das Hotel liegt zentral, das Frühstück ist teuer und die Zimmer sind sauber. Vergiss das mit dem Frühstück.", "expected": ["Das Hotel liegt zentral und die Zimmer sind sauber."]}
+{"id": "h-retract-04", "category": "retract", "input": "Bitte bring Getränke mit. Am besten Bier. Den letzten Satz bitte raus. Wir fangen um sieben an.", "expected": ["Bitte bring Getränke mit. Wir fangen um sieben an."]}
+{"id": "h-restart-01", "category": "restart", "input": "Also die Sache ist die, dass wir. Okay, nochmal von vorne. Wir brauchen bis Montag eine Entscheidung.", "expected": ["Wir brauchen bis Montag eine Entscheidung."]}
+{"id": "h-restart-02", "category": "restart", "input": "Ich würde gern, hm, keine Ahnung, vergiss alles. Hast du morgen Zeit für einen Kaffee?", "expected": ["Hast du morgen Zeit für einen Kaffee?"]}
+{"id": "h-reph-01", "category": "rephrase", "input": "Dein Code ist chaotisch, besser gesagt, er ist schwer zu lesen.", "expected": ["Dein Code ist schwer zu lesen."]}
+{"id": "h-reph-02", "category": "rephrase", "input": "Wir sind pleite, anders formuliert: Unser Budget ist aufgebraucht.", "expected": ["Unser Budget ist aufgebraucht."]}
+{"id": "h-email-01", "category": "email", "input": "Hallo Jonas, das Angebot klingt gut. Ich melde mich bis Mittwoch mit einer Entscheidung. Viele Grüße Mia", "expected": ["Hallo Jonas,\n\ndas Angebot klingt gut. Ich melde mich bis Mittwoch mit einer Entscheidung.\n\nViele Grüße\nMia"]}
+{"id": "h-email-02", "category": "email", "input": "Sehr geehrter Herr Krause, anbei sende ich Ihnen die unterschriebenen Unterlagen. Mit freundlichen Grüßen Mia Wagner", "expected": ["Sehr geehrter Herr Krause,\n\nanbei sende ich Ihnen die unterschriebenen Unterlagen.\n\nMit freundlichen Grüßen\nMia Wagner"]}
+{"id": "h-email-03", "category": "email", "input": "Hi Paula, ähm, kannst du mir die Präsentation bis Freitag, nein, bis Donnerstag schicken? Danke dir. Liebe Grüße Mia", "expected": ["Hi Paula,\n\nkannst du mir die Präsentation bis Donnerstag schicken? Danke dir.\n\nLiebe Grüße\nMia"]}
+{"id": "h-email-04", "category": "keep", "input": "Hallo zusammen, ich bin heute im Homeoffice.", "expected": ["Hallo zusammen, ich bin heute im Homeoffice."]}

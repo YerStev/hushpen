@@ -27,6 +27,7 @@ final class Dictation {
     private var preview: Task<Void, Never>?
     private let models: ModelHost
     private let paste: Bool
+    private let cleanup: CleanupService?
     private let log: (String) -> Void
     private lazy var indicator = SessionIndicator(
         onStop: { [weak self] in Task { await self?.stop() } },
@@ -36,9 +37,13 @@ final class Dictation {
 
     // With paste on, the text is inserted and the clipboard restored; it is
     // left in the clipboard only when pasting is off or fails.
-    init(models: ModelHost, paste: Bool, log: @escaping (String) -> Void) {
+    // How long the cleanup may take before the transcript is used as it is.
+    static let cleanupTimeout: Duration = .seconds(10)
+
+    init(models: ModelHost, paste: Bool, cleanup: CleanupService?, log: @escaping (String) -> Void) {
         self.models = models
         self.paste = paste
+        self.cleanup = cleanup
         self.log = log
     }
 
@@ -64,7 +69,7 @@ final class Dictation {
             preview?.cancel()
             phase = .transcribing
             indicator.transcribing()
-            let outcome = await Self.transcribe(recorder: recorder, model: model, log: log)
+            let outcome = await polished(await Self.transcribe(recorder: recorder, model: model, log: log))
             phase = .idle
             deliver(outcome)
         }
@@ -101,6 +106,9 @@ final class Dictation {
         }
 
         let startedAt = Date()
+        // The cleanup model loads and reads its instructions while the user
+        // speaks.
+        if let cleanup { Task { await cleanup.prepare() } }
         let models = self.models
         let model = Task { try await models.verifiedModel() }
         phase = .recording(recorder, model: model, startedAt: startedAt)
@@ -120,7 +128,7 @@ final class Dictation {
         preview?.cancel()
         phase = .transcribing
         indicator.transcribing()
-        let outcome = await Self.transcribe(recorder: recorder, model: model, log: log)
+        let outcome = await polished(await Self.transcribe(recorder: recorder, model: model, log: log))
         phase = .holding(outcome)
         indicator.finished(outcome, manualPaste: false, keepStatus: true)
         timeout = Task { [weak self] in
@@ -164,6 +172,25 @@ final class Dictation {
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             if !text.isEmpty { indicator.liveText(text) }
         }
+    }
+
+    // The cleaned transcript, or the transcript itself if cleanup is off,
+    // fails or takes too long.
+    private func polished(_ outcome: Result<String, ToolError>) async -> Result<String, ToolError> {
+        guard let cleanup, case .success(let text) = outcome else { return outcome }
+        let log = self.log
+        let cleaned = await withTaskGroup(of: String?.self) { group in
+            group.addTask { await cleanup.clean(text) }
+            group.addTask {
+                try? await Task.sleep(for: Self.cleanupTimeout)
+                return nil
+            }
+            let first = await group.next() ?? nil
+            group.cancelAll()
+            return first
+        }
+        if cleaned == nil { log("Cleanup took too long; the transcript is used as it is.") }
+        return .success(cleaned ?? text)
     }
 
     private func deliver(_ outcome: Result<String, ToolError>) {
