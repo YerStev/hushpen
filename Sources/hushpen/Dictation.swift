@@ -178,19 +178,26 @@ final class Dictation {
     // fails or takes too long.
     private func polished(_ outcome: Result<String, ToolError>) async -> Result<String, ToolError> {
         guard let cleanup, case .success(let text) = outcome else { return outcome }
-        let log = self.log
-        let cleaned = await withTaskGroup(of: String?.self) { group in
-            group.addTask { await cleanup.clean(text) }
-            group.addTask {
-                try? await Task.sleep(for: Self.cleanupTimeout)
-                return nil
-            }
-            let first = await group.next() ?? nil
-            group.cancelAll()
-            return first
-        }
+        let cleaned = await Self.result(within: Self.cleanupTimeout) { await cleanup.clean(text) }
         if cleaned == nil { log("Cleanup took too long; the transcript is used as it is.") }
         return .success(cleaned ?? text)
+    }
+
+    // The work's result, or nil once the time is up. The work itself keeps
+    // running (llama.cpp cannot be interrupted), but nobody waits for it. A
+    // task group would not do: it waits for all its tasks before returning.
+    nonisolated static func result<T: Sendable>(within limit: Duration,
+                                    _ work: @escaping @Sendable () async -> T) async -> T? {
+        let first = FirstResult<T>()
+        return await withCheckedContinuation { continuation in
+            first.continuation = continuation
+            // Detached, so neither waits for the main actor.
+            Task.detached { first.finish(await work()) }
+            Task.detached {
+                try? await Task.sleep(for: limit)
+                first.finish(nil)
+            }
+        }
     }
 
     private func deliver(_ outcome: Result<String, ToolError>) {
@@ -243,5 +250,20 @@ final class Dictation {
         } catch {
             return .failure(ToolError(.transcription, "Transcription failed: \(String(describing: type(of: error)))"))
         }
+    }
+}
+
+// Resumes a continuation with whichever value arrives first.
+private final class FirstResult<T: Sendable>: @unchecked Sendable {
+    private let lock = NSLock()
+    private var finished = false
+    var continuation: CheckedContinuation<T?, Never>?
+
+    func finish(_ value: T?) {
+        lock.lock()
+        defer { lock.unlock() }
+        guard !finished, let continuation else { return }
+        finished = true
+        continuation.resume(returning: value)
     }
 }
