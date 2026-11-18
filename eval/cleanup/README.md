@@ -4,16 +4,17 @@ Measures whether a local model can clean up dictated German text the way a
 person would after dictating: drop filler sounds, keep only the corrected
 version of a self-correction, remove sentences the speaker takes back, start
 over after "nochmal von vorne", keep the better of two phrasings, and lay out
-emails. Nothing here is part of the app.
+emails. The app shares the cleanup prompt; the historical layout pass is no longer used
+in production.
 
 - `cases.jsonl`: 86 hand-written test sentences with the expected result,
   including text that must stay unchanged ("Er wollte nicht nein sagen").
   The prompts were tuned on these.
 - `cases-holdout.jsonl`: 31 further sentences, written before the final
   pipeline was run and not used for tuning.
-- `prompt-numbered.txt`: cleanup; the text is sent as numbered sentences and
+- `Sources/hushpen/Prompts/cleanup.txt`: cleanup; the text is sent as numbered sentences and
   the model returns the sentences that remain.
-- `prompt-layout.txt`: second pass, only for text that starts with a greeting
+- `Sources/hushpen/Prompts/layout.txt`: historical second pass, only for text that starts with a greeting
   and ends with a sign-off.
 - `run.py`: serves each model with `llama-server` and scores it.
 
@@ -22,8 +23,8 @@ words the speaker never said and keeps the dictation as it was.
 
 ```sh
 brew install llama.cpp
-python3 eval/cleanup/run.py --numbered --prompt eval/cleanup/prompt-numbered.txt \
-    --layout eval/cleanup/prompt-layout.txt \
+python3 eval/cleanup/run.py --numbered --prompt Sources/hushpen/Prompts/cleanup.txt \
+    --layout Sources/hushpen/Prompts/layout.txt \
     --server-args "--spec-type ngram-simple --spec-draft-n-max 32" \
     --model ~/.cache/hushpen-eval/gemma-4-E4B_q4_0-it.gguf
 ```
@@ -59,3 +60,21 @@ Findings:
 - Speculative decoding from the input (`ngram-simple`) halves the time for
   long text, because the output mostly repeats the input. Output is unchanged.
 - Asking to keep du/Sie and verb forms stopped "Fasse" -> "Fassen Sie".
+
+## Current production evaluation
+
+Production no longer formats emails. Use `--exclude-category email` when
+comparing cleanup quality against the old results; unchanged email prose would
+otherwise fail the historical line-break scoring. Run each of `cases.jsonl`,
+`cases-holdout.jsonl`, and `cases-holdout2.jsonl` with the same binary:
+
+```sh
+python3 eval/cleanup/run.py --hushpen .build/release/hushpen \
+  --cases eval/cleanup/cases-holdout2.jsonl --exclude-category email
+```
+
+The older model-server path still implements the historical all-or-nothing word
+guard and optional layout pass. It is not equivalent to the app's per-sentence
+fallback. Use `--hushpen` for production comparisons.
+
+See `docs/CLEANUP-REVIEW-2026-11-18.md` for the current comparison and limits.

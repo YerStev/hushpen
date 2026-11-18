@@ -3,7 +3,7 @@ import Foundation
 // Optional cleanup of the transcript by a local language model (Gemma 4 E4B
 // through llama.cpp). It removes filler sounds, self-corrections, sentences the
 // speaker takes back and false starts, keeps the better of two phrasings, and
-// lays out emails. The steps and prompts match eval/cleanup, where they were
+// preserves the wording. The prompt comes from eval/cleanup, where it was
 // measured. Any doubt keeps the transcript as it was.
 enum TextCleanup {
     enum Outcome: Equatable {
@@ -14,7 +14,6 @@ enum TextCleanup {
     }
 
     static let cleanupPrompt = prompt("cleanup")
-    static let layoutPrompt = prompt("layout")
 
     private static func prompt(_ name: String) -> String {
         guard let url = Bundle.module.url(forResource: name, withExtension: "txt", subdirectory: "Prompts"),
@@ -24,11 +23,10 @@ enum TextCleanup {
         return text
     }
 
-    // Processes both prompts ahead of time, so a dictation only waits for
+    // Processes the cleanup prompt ahead of time, so a dictation only waits for
     // its own text.
     static func warm(_ runner: LlamaRunner) throws {
         try runner.warm(system: cleanupPrompt)
-        try runner.warm(system: layoutPrompt)
     }
 
     // One model request; the closure gets the system and user text.
@@ -43,19 +41,16 @@ enum TextCleanup {
         if cleaned.isEmpty {
             return .rejected("empty result")
         }
-        // Words the speaker never said mean the model made something up.
+        // If one sentence introduces new words, preserve that sentence while
+        // keeping independently valid cleanup elsewhere. Strict numbering is
+        // required for this fallback; malformed replies keep the whole source.
         if !novelWords(in: cleaned, comparedTo: original).isEmpty {
-            return .rejected("new words")
+            guard let partial = preservingUncertainSentences(reply, original: original) else {
+                return .rejected("new words")
+            }
+            cleaned = partial
         }
 
-        if looksLikeEmail(cleaned) {
-            let laidOut = try ask(layoutPrompt, cleaned, maxTokens(for: cleaned))
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            // The layout may only insert line breaks.
-            if exactWords(laidOut) == exactWords(cleaned) {
-                cleaned = laidOut
-            }
-        }
         return cleaned == original ? .unchanged : .changed(cleaned)
     }
 
@@ -123,17 +118,22 @@ enum TextCleanup {
         return words(output).filter { !said.contains($0) }
     }
 
-    private static let greeting = try! NSRegularExpression(
-        pattern: "^(hallo|hi|hey|moin|servus|liebe|lieber|sehr geehrte[rn]?|guten (morgen|tag|abend))\\b",
-        options: .caseInsensitive)
-    private static let signOff = try! NSRegularExpression(
-        pattern: "\\b(gr\\u00FC\\u00DFe|gru\\u00DF|gr\\u00FC\\u00DFen|bis dann|bis bald|bis sp\\u00E4ter|ciao|tsch\\u00FCss|cheers)\\b\\W*(\\w+\\W*){1,3}$",
-        options: .caseInsensitive)
-
-    // Starts with a greeting and ends with a sign-off and a name.
-    static func looksLikeEmail(_ text: String) -> Bool {
-        let range = NSRange(text.startIndex..., in: text)
-        return greeting.firstMatch(in: text, range: range) != nil
-            && signOff.firstMatch(in: text, range: range) != nil
+    static func preservingUncertainSentences(_ reply: String, original: String) -> String? {
+        let source = sentences(original)
+        var previous = 0
+        var result: [String] = []
+        for raw in reply.split(whereSeparator: \.isNewline) {
+            let line = raw.trimmingCharacters(in: .whitespaces)
+            guard line.first == "[", let close = line.firstIndex(of: "]"),
+                  let number = Int(line[line.index(after: line.startIndex)..<close]),
+                  number > previous, number <= source.count else { return nil }
+            let edited = String(line[line.index(after: close)...]).trimmingCharacters(in: .whitespaces)
+            guard !edited.isEmpty else { return nil }
+            let sentence = source[number - 1]
+            // New vocabulary is never accepted by this recovery path.
+            result.append(novelWords(in: edited, comparedTo: sentence).isEmpty ? edited : sentence)
+            previous = number
+        }
+        return result.isEmpty ? nil : result.joined(separator: " ")
     }
 }

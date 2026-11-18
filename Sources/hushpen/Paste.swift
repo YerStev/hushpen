@@ -46,10 +46,23 @@ enum Paste {
             AXUIElementSetMessagingTimeout(element, 0.25)
             var role: CFTypeRef?
             var count: CFTypeRef?
+            var subrole: CFTypeRef?
             AXUIElementCopyAttributeValue(element, kAXRoleAttribute as CFString, &role)
+            AXUIElementCopyAttributeValue(element, kAXSubroleAttribute as CFString, &subrole)
             AXUIElementCopyAttributeValue(element, kAXNumberOfCharactersAttribute as CFString, &count)
             return Target(app: app, role: role as? String, characters: (count as? NSNumber)?.intValue,
-                          secureInput: secureInput)
+                          secureInput: secureInput || (subrole as? String) == "AXSecureTextField")
+        }
+
+        // Accessibility is incomplete in some browser and Electron editors.
+        // An unknown role is not evidence that the user has no text cursor.
+        // Try the standard paste shortcut unless focus is clearly non-text.
+        var acceptsPaste: Bool {
+            !secureInput && ![
+                "AXButton", "AXCheckBox", "AXRadioButton", "AXMenuItem", "AXMenu",
+                "AXToolbar", "AXImage", "AXSlider", "AXScrollBar", "AXTable",
+                "AXOutline", "AXSecureTextField",
+            ].contains(role ?? "")
         }
 
         var description: String {

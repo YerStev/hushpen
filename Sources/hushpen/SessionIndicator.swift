@@ -1,12 +1,10 @@
 import AppKit
 
-// The menu-bar item and text box exist only while a dictation is active or its
-// result is being shown. Transcript text appears only in the on-screen box,
-// never in the menu bar, logs or files.
+// The menu-bar item and screen border show state without displaying text.
 @MainActor
 final class SessionIndicator {
     private var status: StatusItem?
-    private let box = DictationBox()
+    private let border = ScreenBorder()
     private let onStop: () -> Void
     private let onCancel: () -> Void
     private let log: (String) -> Void
@@ -28,36 +26,32 @@ final class SessionIndicator {
                 let seconds = Int(Date().timeIntervalSince(startedAt))
                 let level = recorder.level
                 self?.show(.recording(seconds: seconds, level: level))
-                self?.box.setLevel(level)
+                self?.border.setLevel(level)
             }
         }
         RunLoop.main.add(timer, forMode: .common)
         display = timer
         show(.recording(seconds: 0, level: 0))
-        box.show()
+        border.show()
         Task { [weak self] in
             try? await Task.sleep(for: .seconds(0.5))
-            guard let self, self.display != nil, !self.box.isOnScreen else { return }
-            self.log("The dictation box did not appear on the current screen (\(self.box.screenReport)); rebuilding it.")
-            self.box.recover()
+            guard let self, self.display != nil, !self.border.isOnScreen else { return }
+            self.log("The screen border did not appear on the current screen (\(self.border.screenReport)); rebuilding it.")
+            self.border.recover()
             try? await Task.sleep(for: .seconds(0.3))
             guard self.display != nil else { return }
-            self.log(self.box.isOnScreen ? "The rebuilt dictation box is on screen."
-                                         : "The rebuilt dictation box is still not on screen (\(self.box.screenReport)).")
+            self.log(self.border.isOnScreen ? "The rebuilt screen border is on screen."
+                                         : "The rebuilt screen border is still not on screen (\(self.border.screenReport)).")
         }
-    }
-
-    func liveText(_ text: String) {
-        box.setText(text)
     }
 
     func transcribing() {
         stopDisplay()
         show(.transcribing)
-        box.transcribing()
+        border.transcribing()
     }
 
-    // The box fades out on success and shakes when pasting failed or nothing
+    // The border fades out on success and lingers when pasting failed or nothing
     // was recognized. A held result keeps the menu-bar item until it is
     // delivered or expires.
     func finished(_ outcome: Result<String, ToolError>, manualPaste: Bool,
@@ -68,11 +62,11 @@ final class SessionIndicator {
         case .success:
             show(.done(manualPaste: manualPaste))
             seconds = manualPaste ? Self.actionSeconds : Self.resultSeconds
-            if pasteFailed { box.shakeAndDismiss() } else { box.dismiss() }
+            if pasteFailed { border.lingerAndDismiss() } else { border.dismiss() }
         case .failure(let error):
             show(.failed(error))
             seconds = Self.actionSeconds
-            box.shakeAndDismiss()
+            border.lingerAndDismiss()
         }
         dismissal?.cancel()
         dismissal = Task { [weak self] in
@@ -82,26 +76,10 @@ final class SessionIndicator {
         }
     }
 
-    // The paste was sent but the text field did not change. The box comes
-    // back for a moment with a hint, as the text would otherwise seem lost.
-    func pasteMissed() {
-        show(.done(manualPaste: true))
-        box.show()
-        box.setText("Not pasted. The text is in the clipboard: press \u{2318}V.")
-        box.transcribing()
-        box.shakeAndDismiss(after: Self.actionSeconds)
-        dismissal?.cancel()
-        dismissal = Task { [weak self] in
-            try? await Task.sleep(for: .seconds(Self.actionSeconds))
-            guard !Task.isCancelled else { return }
-            self?.removeStatus()
-        }
-    }
-
     func dismiss() {
         stopDisplay()
         dismissal?.cancel()
-        box.dismiss()
+        border.dismiss()
         removeStatus()
     }
 

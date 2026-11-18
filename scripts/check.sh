@@ -16,7 +16,7 @@ for file in Path("Sources/hushpen").glob("*.swift"):
 assert "flushAndWait()" in Path("Sources/hushpen/Telemetry.swift").read_text()
 CHECK_POLICY
 swift build -c release
-# Tests show the dictation box briefly. They build outside the repository
+# Tests show the screen border briefly. They build outside the repository
 # because codesign rejects the extended attributes a synced Documents folder
 # adds to the test bundle.
 swift test --disable-xctest --scratch-path "${TMPDIR:-/tmp}/hushpen-tests"

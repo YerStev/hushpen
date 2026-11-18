@@ -9,20 +9,21 @@ One process, the login service (`hushpen --daemon`, started by
    loaded so dictations start immediately; see the ASR results for measured RSS.
 2. A shortcut press opens the microphone. Audio is kept in memory and resampled
    to 16 kHz mono. Recording stops after 300 seconds at the latest.
-3. While you speak, the audio after the last settled word is transcribed about
-   every 0.7 seconds and shown in the box. Words more than 4 seconds old are
-   settled, so each pass stays short while the box shows the whole text.
+3. While you speak, a click-through orange border frames the display under the
+   pointer at recording start. The border stays fixed; brightness follows microphone level with smooth
+   attack and release. The baseline is faint; brightness builds over roughly
+   a quarter second of sustained speech, with a stronger response at normal
+   speaking volume. Processing uses a subdued fixed brightness.
+   A layered orange halo fades up to 60 points inward from
+   the screen edge. There is no live text preview or repeated preview transcription.
 4. The second press closes the microphone. The whole recording, followed by
-   0.6 seconds of silence so the last word is not cut off, is transcribed once
-   more; that result is pasted, not the preview.
+   0.6 seconds of silence so the last word is not cut off, is transcribed once.
 5. Optional cleanup (`--cleanup on`) by Gemma 4 E4B through llama.cpp, before
    pasting; see below.
-6. Pasting: the text goes to the clipboard (marked transient), ⌘V is sent, and
-   the previous clipboard is restored after 0.6 seconds. Before and after, the
-   focused element's role and character count are read through Accessibility
-   (never its text). If the count is readable and has not changed, the paste
-   did not arrive: the text stays in the clipboard, the box shows "press ⌘V"
-   and the log notes the app and element.
+6. The final text always stays in the clipboard. Command-V is sent only with
+   Accessibility permission and no secure input. Clearly non-text controls
+   are copy-only; unknown browser/Electron editor roles still receive Command-V. No timer restores the old
+   clipboard, so a failed or unobservable paste cannot lose the dictation.
 
 ### Text cleanup
 
@@ -31,11 +32,11 @@ for results):
 
 1. The transcript is sent as numbered sentences with `Prompts/cleanup.txt`.
    The model returns the sentences that remain, edited where needed.
-2. If the result contains a word that is not in the transcript, it is not
-   used.
-3. Text that starts with a greeting and ends with a sign-off and a name gets a
-   second request with `Prompts/layout.txt`. Its result is used only if it has
-   exactly the same words, letter for letter.
+2. New words are not accepted. If the response has valid, increasing sentence
+   numbers, sentences introducing new words fall back to their source sentence;
+   other edits survive. Malformed responses with new words reject the whole result.
+3. There is no separate email layout request. This remains conservative cleanup,
+   not a general spelling/grammar corrector or a learned vocabulary system.
 
 `LlamaRunner.swift` wraps the llama.cpp C API (pinned xcframework, release
 b11429, the version the evaluation used). Decoding is greedy, so it matches
@@ -46,9 +47,9 @@ and checked in one step (prompt lookup decoding), which does not change the
 output. Gemma's sliding-window layers use the full-size cache (`swa_full`) so
 tokens can be removed from a sequence.
 
-`CleanupService` loads the model when a recording starts, processes both
-prompts while the user speaks, and unloads it after 10 minutes without a
-dictation. A cleanup that fails or takes more than 10 seconds leaves the
+`CleanupService` preloads at service startup and loads again when needed, processes the cleanup
+prompt while the user speaks, and unloads it after 10 minutes without a
+dictation. A cleanup that fails or takes more than 20 seconds leaves the
 transcript as it is. The log records the outcome and the time, never text.
 
 The model file is registered with `--cleanup-model download|PATH` and checked
@@ -56,13 +57,13 @@ by SHA-256; its size and modification date are recorded and a changed file is
 hashed again before loading. `--clean-text` cleans each line of standard input
 and prints JSON, for the evaluation.
 
-### The dictation box
+### The screen border
 
 A long-lived panel can stop appearing after Space, full-screen or Stage
 Manager changes, while a new panel appears normally. Half a second after each
-start the box checks that it is on the current screen; if not, it moves its
-content to a new panel and logs what it found. `DictationBoxTests` cover this
-and show the box briefly when `check.sh` runs.
+start the border checks that it is on the current screen; if not, it moves its
+content to a new panel and logs what it found. `ScreenBorderTests` cover this
+and show the border briefly when `check.sh` runs.
 
 There is no socket or other inter-process interface. A lock file prevents a
 second service. Before each recording, the model folder is hashed and compared
@@ -74,10 +75,10 @@ with the hash saved when the model was registered; a changed model is rejected.
 | --- | --- |
 | `main.swift` | Command-line commands |
 | `Daemon.swift` | Login service: shortcut, startup, shutdown |
-| `Dictation.swift` | One recording: start, live preview, stop, paste |
+| `Dictation.swift` | One recording: start, stop, cleanup, paste |
 | `TextCleanup.swift`, `LlamaRunner.swift`, `CleanupService.swift`, `CleanupModel.swift` | Optional text cleanup with llama.cpp |
-| `Prompts/` | Cleanup and layout prompts, shared with `eval/cleanup` |
-| `DictationBox.swift` | On-screen glass box with the live text and voice edge |
+| `Prompts/` | Cleanup prompt and historical layout prompt for `eval/cleanup` |
+| `ScreenBorder.swift` | Click-through orange display border with voice feedback |
 | `ModelHost.swift` | Keeps the verified model loaded |
 | `ModelImport.swift`, `ModelDigest.swift`, `Config.swift` | Model download, checks, registration |
 | `Recorder.swift` | Microphone capture and resampling |

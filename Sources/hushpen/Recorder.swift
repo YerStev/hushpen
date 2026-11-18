@@ -130,20 +130,6 @@ final class Recorder: @unchecked Sendable {
         return try Self.resample(raw, from: rate, to: Self.targetSampleRate)
     }
 
-    // A 16 kHz copy of the audio from a captured-sample position onward, for
-    // the live preview. Recording continues undisturbed.
-    func snapshot(from start: Int) throws -> (samples: [Float], total: Int, rate: Double) {
-        lock.lock()
-        let rate = hardwareSampleRate
-        let total = monoSamples.count
-        let raw = start < total ? Array(monoSamples[max(0, start)...]) : []
-        lock.unlock()
-
-        guard !raw.isEmpty, rate > 0 else { return ([], total, rate) }
-        let samples = rate == Self.targetSampleRate ? raw : try Self.resample(raw, from: rate, to: Self.targetSampleRate)
-        return (samples, total, rate)
-    }
-
     func cancel() {
         if running {
             engine.inputNode.removeTap(onBus: 0)

@@ -42,6 +42,7 @@ final class Daemon: NSObject, NSApplicationDelegate {
 
         installSignalHandling()
         preloadModel()
+        if let cleanup { Task { await cleanup.prepare() } }
 
         log("ready. Hotkey \(settings.hotkey). Paste: \(settings.pasteAutomatically ? "automatic" : "off"). Cleanup: \(settings.cleanup ? "on" : "off"). License requests: \(Telemetry.statusText)")
         if settings.pasteAutomatically && !Paste.isTrusted {

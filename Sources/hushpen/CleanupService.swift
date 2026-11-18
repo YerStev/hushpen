@@ -17,6 +17,7 @@ actor CleanupService {
     // Loads the model if needed and processes the instructions.
     func prepare() {
         unload?.cancel()
+        defer { scheduleUnload() }
         do {
             if runner == nil {
                 let started = ContinuousClock.now

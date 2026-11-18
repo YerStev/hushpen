@@ -1,8 +1,8 @@
 # hushpen
 
 Dictation for macOS that runs on your Mac. Press a shortcut, speak, press it
-again: the text is pasted where your cursor is. While you speak, a small box at
-the bottom of the screen shows the recognized text.
+again: the text is pasted where your cursor is. While you speak, an orange glow
+frames the active screen and responds to your voice. No transcript overlay is shown.
 
 Speech recognition uses the [Voz](https://huggingface.co/desert-ant-labs/voz)
 model by [Desert Ant Labs](https://desertant.com). Audio and text stay on your Mac.
@@ -11,7 +11,7 @@ model by [Desert Ant Labs](https://desertant.com). Audio and text stay on your M
 
 - Mac with Apple silicon, macOS 14 or newer
 - Xcode or the Command Line Tools with Swift 6.2 or newer (`xcode-select --install`)
-- About 1 GB of disk space (340 MB for the model)
+- About 1 GB of disk space (about 340 MB for the speech model)
 
 ## Install
 
@@ -33,8 +33,28 @@ which macOS only lets you do yourself:
    Accessibility → turn on hushpen. Then restart the service:
    `launchctl kickstart -k gui/$(id -u)/io.github.yerstev.hushpen.agent`
 
-Without Accessibility, the text is copied to the clipboard and the box shakes;
-paste it with ⌘V.
+The dictation always remains in the clipboard. Without Accessibility or a
+focused text control, paste it yourself with ⌘V.
+
+## Update an existing installation
+
+From your existing clone, with no uncommitted changes:
+
+```sh
+git switch main
+git pull --ff-only origin main
+./scripts/install.sh
+```
+
+Settings and registered models are kept. An older speech model is upgraded when
+needed. Use your Apple Development certificate on this Mac to preserve permissions:
+`HUSHPEN_SIGN_IDENTITY="<SHA-1>" ./scripts/install.sh` (find it with
+`security find-identity -v -p codesigning`). Without a certificate, remove and
+re-add hushpen under Accessibility after rebuilding.
+
+Verify: `~/Applications/hushpen.app/Contents/MacOS/hushpen --verify` should show
+`(matches)` and `Service: running`. Test one dictation in a text field and one
+with no text field focused; both should remain available with ⌘V.
 
 ## Use
 
@@ -56,22 +76,23 @@ speak naturally:
 
 - filler sounds ("äh", "ähm") are removed,
 - "am Dienstag, nein, am Mittwoch" becomes "am Mittwoch",
-- "Ach, vergiss den letzten Satz" removes the sentence before it,
+- spoken deletion commands such as "vergiss den letzten Satz" are supported,
+  but can remove the wrong sentence,
 - "Okay, nochmal von vorne" keeps only what follows,
-- "besser gesagt …" keeps the better phrasing,
-- an email with greeting and sign-off gets its line breaks.
+- "besser gesagt …" keeps the better phrasing.
 
-It is off by default because the model (Gemma 4 E4B, Apache 2.0) is 5.2 GB and
-uses about 4 GB of memory while loaded. It loads when you start dictating and
-is unloaded after 10 minutes without a dictation. It adds about 0.3–2 seconds.
-When in doubt, for example when the result contains a word you never said, the
-transcript is pasted as recognized. The prompts are tuned for German.
+Enable cleanup during installation or update:
 
 ```sh
-~/Applications/hushpen.app/Contents/MacOS/hushpen --cleanup-model download
-~/Applications/hushpen.app/Contents/MacOS/hushpen --cleanup on
-launchctl kickstart -k gui/$(id -u)/io.github.yerstev.hushpen.agent
+HUSHPEN_CLEANUP=1 ./scripts/install.sh
 ```
+
+It needs 16 GB RAM, about 8 GB free disk space and a 5.2 GB model download
+(Gemma 4 E4B, Apache 2.0). Existing cleanup settings are preserved on updates.
+Cleanup is tuned for German and usually adds about 0.3–2 seconds once loaded;
+cold loading can take longer. After 20 seconds, the original transcript is used.
+Names, grammar and spoken deletion commands can still be wrong. There is no
+separate email formatting or automatic vocabulary learning.
 
 ## What leaves your Mac
 
@@ -89,8 +110,8 @@ hushpen leaves SDK licensing unchanged. See the source review in
 [docs/TECHNICAL.md](docs/TECHNICAL.md).
 
 On your Mac, hushpen saves no recordings and no transcripts. The text passes
-through the clipboard while it is pasted, and your previous clipboard is
-restored afterwards. Details: [docs/PRIVACY.md](docs/PRIVACY.md).
+into the clipboard and stays there for manual pasting, replacing its previous
+contents. Automatic paste is attempted unless focus is clearly non-text or secure. Details: [docs/PRIVACY.md](docs/PRIVACY.md).
 
 Recognition comparison methodology and model availability: [docs/ASR-COMPARISON.md](docs/ASR-COMPARISON.md). Private evaluation data stays outside this repository.
 

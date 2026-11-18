@@ -8,12 +8,12 @@ hushpen 0.3.0
 - Speech is recognized on your Mac by the Voz model. Audio and text are kept in
   memory only while a dictation is processed; no recordings or transcripts are
   written to disk. macOS may still swap memory to disk.
-- The recognized text is shown in a box on your screen while you speak. Screen
-  sharing or recording would capture it.
-- Pasting uses the clipboard: hushpen puts the text there, marked as transient
-  so clipboard managers skip it, sends ⌘V and restores your previous clipboard
-  0.6 seconds later. If pasting is off or fails, the text stays in the clipboard,
-  where other apps can read it.
+- The orange screen border displays recording/processing state, never transcript text.
+- The final text stays in the system clipboard, replacing its previous contents.
+  Other apps and clipboard managers can read or retain it. Automatic paste sends
+  ⌘V unless secure input or a clearly non-text control is active. Unknown
+  browser/Electron editor roles still receive the paste shortcut; press ⌘V yourself in the intended field.
+- hushpen does not watch subsequent edits or automatically learn vocabulary.
 - The log (`~/Library/Logs/hushpen.log`) records states and errors, never text.
 - Text cleanup, if you turn it on, runs on your Mac with llama.cpp and the
   Gemma model. The text goes to no other process or server.

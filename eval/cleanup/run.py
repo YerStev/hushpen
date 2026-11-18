@@ -277,6 +277,8 @@ def main():
     parser.add_argument("--out", default=ROOT / "measurements/local/cleanup", type=Path)
     parser.add_argument("--server", default=shutil.which("llama-server") or "llama-server")
     parser.add_argument("--port", default=8077, type=int)
+    parser.add_argument("--exclude-category", action="append", default=[],
+                        help="Exclude a category, e.g. email when evaluating cleanup without layout")
     parser.add_argument("--only", help="Run only cases whose id starts with this prefix")
     parser.add_argument("--plain", dest="numbered", action="store_false",
                         help="Send the text as it is instead of as numbered sentences")
@@ -288,6 +290,7 @@ def main():
     args = parser.parse_args()
 
     cases = [json.loads(line) for line in args.cases.read_text().splitlines() if line.strip()]
+    cases = [c for c in cases if c["category"] not in args.exclude_category]
     if args.only:
         cases = [c for c in cases if c["id"].startswith(args.only)]
     if args.rescore:

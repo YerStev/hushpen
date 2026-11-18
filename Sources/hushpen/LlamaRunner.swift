@@ -6,8 +6,8 @@ import llama
 //
 // Each system prompt gets its own sequence in the context, and the tokens it
 // last processed are kept: a request with the same instructions only
-// processes the user text. The cleanup and layout prompts therefore do not
-// push each other out.
+// processes the user text. Separate sequences are available for evaluation
+// experiments; production currently uses only the cleanup prompt.
 //
 // Generation drafts tokens from the user text: cleaned text mostly repeats
 // the dictation, so the tokens that followed the last few generated ones
@@ -111,6 +111,9 @@ final class LlamaRunner {
             // Positions after the last accepted token hold rejected drafts.
             try truncate(sequence, to: (cached[sequence]?.count ?? 0) - (draft.count - accepted))
             next = predicted[accepted]
+        }
+        guard llama_vocab_is_eog(vocab, next) else {
+            throw ToolError(.failure, "The cleanup result exceeded its token limit.")
         }
         return String(decoding: output.flatMap(piece), as: UTF8.self)
     }

@@ -56,3 +56,9 @@ Input:
 Output:
 [1] Nein, das geht so nicht.
 [2] Ich meine, wir brauchen mehr Zeit.
+
+Input:
+[1] Der Vorschlag ist schlecht.
+[2] Okay, freundlicher: Der Vorschlag überzeugt mich noch nicht.
+Output:
+[2] Der Vorschlag überzeugt mich noch nicht.

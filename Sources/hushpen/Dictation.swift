@@ -7,13 +7,6 @@ import Voz
 final class Dictation {
     static let maximumRecordingSeconds: Double = 300
     static let holdSeconds: Double = 300
-    // The live preview re-transcribes only the audio after its last settled
-    // word, so each pass stays short; settled words are kept, so the preview
-    // still shows the whole dictation.
-    static let previewWindowSeconds: Double = 14
-    static let previewSettleSeconds: Double = 4
-    static let previewInterval: Duration = .milliseconds(700)
-
     private enum Phase {
         case idle
         case starting
@@ -24,7 +17,6 @@ final class Dictation {
 
     private var phase: Phase = .idle
     private var timeout: Task<Void, Never>?
-    private var preview: Task<Void, Never>?
     private let models: ModelHost
     private let paste: Bool
     private let cleanup: CleanupService?
@@ -35,10 +27,9 @@ final class Dictation {
         log: { [weak self] in self?.log($0) }
     )
 
-    // With paste on, the text is inserted and the clipboard restored; it is
-    // left in the clipboard only when pasting is off or fails.
+    // The final text remains in the clipboard whether automatic paste succeeds or not.
     // How long the cleanup may take before the transcript is used as it is.
-    static let cleanupTimeout: Duration = .seconds(10)
+    static let cleanupTimeout: Duration = .seconds(20)
 
     init(models: ModelHost, paste: Bool, cleanup: CleanupService?, log: @escaping (String) -> Void) {
         self.models = models
@@ -66,7 +57,6 @@ final class Dictation {
             deliver(outcome)
         case .recording(let recorder, let model, _):
             timeout?.cancel()
-            preview?.cancel()
             phase = .transcribing
             indicator.transcribing()
             let outcome = await polished(await Self.transcribe(recorder: recorder, model: model, log: log))
@@ -86,7 +76,6 @@ final class Dictation {
             return
         }
         timeout?.cancel()
-        preview?.cancel()
         phase = .idle
         indicator.dismiss()
     }
@@ -113,7 +102,6 @@ final class Dictation {
         let model = Task { try await models.verifiedModel() }
         phase = .recording(recorder, model: model, startedAt: startedAt)
         indicator.recordingStarted(recorder, at: startedAt)
-        preview = Task { [weak self] in await self?.runPreview(recorder: recorder, model: model) }
         timeout = Task { [weak self] in
             try? await Task.sleep(for: .seconds(Self.maximumRecordingSeconds))
             guard !Task.isCancelled else { return }
@@ -125,7 +113,6 @@ final class Dictation {
     // pasting into whatever app is in front after five minutes.
     private func stopAtLimit() async {
         guard case .recording(let recorder, let model, _) = phase else { return }
-        preview?.cancel()
         phase = .transcribing
         indicator.transcribing()
         let outcome = await polished(await Self.transcribe(recorder: recorder, model: model, log: log))
@@ -135,42 +122,6 @@ final class Dictation {
             try? await Task.sleep(for: .seconds(Self.holdSeconds))
             guard !Task.isCancelled else { return }
             self?.cancel()
-        }
-    }
-
-    // Shows a provisional transcript while the user speaks. It is displayed
-    // only in the on-screen preview; the delivered text always comes from the
-    // final pass over the complete recording.
-    private func runPreview(recorder: Recorder, model: Task<Voz, Error>) async {
-        guard let voz = try? await model.value else { return }
-        var settled: [String] = []
-        var settledUntil = 0
-        var lastTotal = 0
-        while !Task.isCancelled {
-            try? await Task.sleep(for: Self.previewInterval)
-            guard !Task.isCancelled,
-                  let snapshot = try? recorder.snapshot(from: settledUntil),
-                  snapshot.samples.count >= Int(Recorder.targetSampleRate / 2),
-                  snapshot.total > lastTotal else { continue }
-            lastTotal = snapshot.total
-            guard let result = try? await voz.transcribe(samples: snapshot.samples),
-                  !Task.isCancelled else { continue }
-            var words = result.words
-
-            // Once the window is long, keep the words well before its end and
-            // continue the next pass from the pause after the last of them.
-            let windowSeconds = Double(snapshot.samples.count) / Recorder.targetSampleRate
-            if windowSeconds > Self.previewWindowSeconds,
-               let last = words.lastIndex(where: { $0.end < windowSeconds - Self.previewSettleSeconds }),
-               last + 1 < words.count {
-                settled += words[...last].map(\.text)
-                let cut = (words[last].end + words[last + 1].start) / 2
-                settledUntil += Int(cut * snapshot.rate)
-                words.removeFirst(last + 1)
-            }
-            let text = (settled + words.map(\.text)).joined(separator: " ")
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            if !text.isEmpty { indicator.liveText(text) }
         }
     }
 
@@ -206,12 +157,9 @@ final class Dictation {
             indicator.finished(outcome, manualPaste: false)
             log("Dictation failed: \(error.message)")
         case .success(let text):
-            let manualPaste = !Output.deliverAndPaste(text, paste: paste) { [weak self] target in
-                self?.log("Paste did not arrive; the text is in the clipboard (\(target)).")
-                self?.indicator.pasteMissed()
-            }
+            let manualPaste = !Output.deliverAndPaste(text, paste: paste)
             if paste && manualPaste {
-                log("Automatic paste skipped: Accessibility access is missing. The text is in the clipboard.")
+                log("Automatic paste skipped (Accessibility: \(Paste.isTrusted), \(Paste.Target.current().description)). The text is in the clipboard.")
             }
             indicator.finished(outcome, manualPaste: manualPaste, pasteFailed: paste && manualPaste)
         }

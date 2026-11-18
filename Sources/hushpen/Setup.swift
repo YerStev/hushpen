@@ -55,7 +55,7 @@ enum Setup {
                 case 2: selectModel()
                 case 3:
                     let mode = show("Paste mode",
-                                    "Automatic: the text is pasted where your cursor is, and your clipboard is restored. This needs Accessibility access.\n\nClipboard only: the text is copied and you paste it with ⌘V.",
+                                    "Automatic: the text is pasted into a focused text field and stays in your clipboard. This needs Accessibility access.\n\nClipboard only: the text is copied and you paste it with ⌘V.",
                                     ["Automatic", "Clipboard only", "Cancel"])
                     if mode < 2 {
                         var changed = settings
