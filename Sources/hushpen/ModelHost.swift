@@ -1,9 +1,7 @@
 import Foundation
 import Voz
 
-// Keeps one verified Voz instance alive in the service. The SDK's own usage
-// turnstile lives on that instance, so its normal debounced reporting runs
-// in-process without an explicit flush after each dictation.
+// Keeps one verified Voz instance alive. The SDK manages licensing on load.
 actor ModelHost {
     private var loaded: (config: ModelConfig, voz: Voz)?
 
@@ -29,21 +27,21 @@ actor ModelHost {
         guard voz.sampleRate == Recorder.targetSampleRate else {
             throw ToolError(.failure, "The model expects \(Int(voz.sampleRate)) Hz; hushpen supplies \(Int(Recorder.targetSampleRate)) Hz.")
         }
-        await flushUsage()
+        await flushLicense()
         loaded = (config, voz)
         return voz
     }
 
-    // Drop a model whose folder failed verification, after its usage was sent.
+    // Drop a model whose folder failed verification, after in-flight license requests finish.
     func unload() async {
-        await flushUsage()
+        await flushLicense()
         loaded = nil
     }
 
     // Before replacing the model or stopping the service.
-    func flushUsage() async {
+    func flushLicense() async {
         if let voz = loaded?.voz {
-            await Telemetry.flushPendingUsage(keeping: voz)
+            await Telemetry.flushPendingLicense(keeping: voz)
         }
     }
 }

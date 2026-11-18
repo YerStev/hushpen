@@ -11,7 +11,7 @@ model by [Desert Ant Labs](https://desertant.com). Audio and text stay on your M
 
 - Mac with Apple silicon, macOS 14 or newer
 - Xcode or the Command Line Tools with Swift 6.2 or newer (`xcode-select --install`)
-- About 1 GB of disk space (470 MB for the model)
+- About 1 GB of disk space (340 MB for the model)
 
 ## Install
 
@@ -75,40 +75,24 @@ launchctl kickstart -k gui/$(id -u)/io.github.yerstev.hushpen.agent
 
 ## What leaves your Mac
 
-Apart from downloads you start, only the usage report goes out:
+The SDK fetches Voz v0.5.0 from huggingface.co and checks file sizes and
+SHA-256. Optional cleanup downloads the pinned Gemma model from Hugging Face;
+cleanup inference runs on this Mac.
 
-**Model download** (once): the SDK fetches Voz v0.1.0 from huggingface.co and
-checks every file against its SHA-256. If you turn on text cleanup,
-`--cleanup-model download` fetches the Gemma model file from huggingface.co
-the same way. Cleanup itself runs on your Mac.
-
-**Usage report**: the Voz SDK reports usage to Desert Ant Labs. This is a
-condition of the model license, so hushpen does not turn it off. A real report:
-
-```json
-POST https://events.desertant.com/api/v1/ingest
-{
-  "app": { "id": "io.github.yerstev.hushpen" },
-  "events": [{
-    "name": "load",
-    "deviceId": "<random ID created on first use>",
-    "callCount": 1,
-    "context": { "appVersion": "0.3.0", "osName": "macOS", "osVersion": "26" }
-  }],
-  "platform": "server",
-  "sdk": { "name": "Voz", "version": "3.5.0" },
-  "sentAt": "2026-10-08T18:42:10.160Z"
-}
-```
-
-`callCount` is the number of transcriptions since the last report; the live text
-preview counts too. A report is sent on the first dictation of each day (UTC)
-and when the service stops. It contains no audio and no text. Like any request,
-it reveals your IP address to the receiving server.
+SDK 4.3.0 replaces usage reports with license grant and activation requests to
+`https://events.desertant.com/api/v1/license` and `/api/v1/activate` on model
+load. These carry a persistent random installation ID, app ID, model and SDK
+versions, platform and the signed activation token. They contain no audio,
+text or transcription counts. Activated licenses are cached for their period;
+failed requests are retried. Requests reveal your IP address to the server.
+hushpen leaves SDK licensing unchanged. See the source review in
+[docs/TECHNICAL.md](docs/TECHNICAL.md).
 
 On your Mac, hushpen saves no recordings and no transcripts. The text passes
 through the clipboard while it is pasted, and your previous clipboard is
 restored afterwards. Details: [docs/PRIVACY.md](docs/PRIVACY.md).
+
+Recognition comparison methodology and model availability: [docs/ASR-COMPARISON.md](docs/ASR-COMPARISON.md). Private evaluation data stays outside this repository.
 
 ## Uninstall
 

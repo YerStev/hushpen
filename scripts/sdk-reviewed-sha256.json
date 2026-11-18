@@ -1,0 +1,43 @@
+{
+  "sdk": {
+    "revision": "baf4e6e3b4655c8e54aa8d5a25215b5f35f899a7",
+    "version": "4.3.0"
+  },
+  "sha256": {
+    "Sources/CoreAndroidTests/CoreBridge.swift": "7e82d9495df7dfe6770a1847c782e63a4b19c8b7714a8044c74282d9f59cd0f6",
+    "Sources/HostBridge/JNI.swift": "5dbc1f73bf347c7c70e422054868e839d2364854e7f607c55c7ba1ddee09a941",
+    "Sources/ModelStore/AndroidBackend.swift": "c6f9bb6ddac523eb07cba1238e019111b406b1fcec80348e9de7422d15da9264",
+    "Sources/ModelStore/DownloadCoordinator.swift": "6c453027f421c9f3bb97539bfca25b5338d49d565a3fe454b698f59619066485",
+    "Sources/ModelStore/FoundationBackend.swift": "9b76bcee40711d759d854fc6c7a0c496f9fc4b8aabcf6c6497a2c5e76ca54436",
+    "Sources/ModelStore/HubSettings.swift": "a6e53e419850bd96d52473d240d25a787827c23b23e902e3d5f6033f9743c685",
+    "Sources/ModelStore/Manifest.swift": "5090b143d74326202949421c7fd1d30687f1b20924f0c91cec715fe8fb8a6c34",
+    "Sources/ModelStore/ModelDistribution.swift": "3eb15093abf71900fbea62caea30622fce94ef304c2a3c355afa8c39292a0c0b",
+    "Sources/ModelStore/ModelSpec.swift": "aa8b625052a2277bab71a1c031c0709c82b92448b6e9dec8bdd142ba735710f9",
+    "Sources/ModelStore/ModelStore.swift": "65a5a3d621ca627addece52660e60e07a76b2aa5b20824ca468b726c65b42d1a",
+    "Sources/ModelStore/POSIXFileSystem.swift": "5f2cac4bc02fb54ede1263a408fc7b7427754f27025f438a8b03ca5ce9e6c391",
+    "Sources/ModelStore/RevisionRequirement.swift": "34b1133c8ac6f6c2d3ff07ed941ebcda48b42bcfaebe9b15fd04fb385fc43048",
+    "Sources/ModelStore/SHA256.swift": "6af0fdfe0f8db5c2c2f95b303b8d30df557fb437b2027099959fa95b198a0eb4",
+    "Sources/ModelStore/StoredModel.swift": "7264e6e5ec1a0664294894673aa14d28a6fd527834b5db3f56745e91968cf8fd",
+    "Sources/ModelStore/Transport.swift": "e42b5a333fd3a150204bc184fec372ec755fca90b6119807d9d6d5aab58d7b1e",
+    "Sources/ModelStore/WasmBackend.swift": "142b8f8853038e0cb28ab41ce598e9bffaef443e88b8d7531e8f9213a09b0ff7",
+    "Sources/ModelStore/XetPointer.swift": "d971595d8cdc0b8767f8ed8125cec70ee8abaa050e517896559762af03f2dc6a",
+    "Sources/ModelStore/XetTransport.swift": "609e22b688990a638e027a345456b57fa698a0dfbf2f9ddb266232f6fd7e7998",
+    "Sources/PlatformSupport/Blocking.swift": "39df18ecce9a094a7ea722b47292a00245795ca4ced48a5f143223d8023578d8",
+    "Sources/PlatformSupport/Environment.swift": "a8f83b22f32244463a42ef5eea94dc8f868185b94de6708ba12ccdc44278a499",
+    "Sources/PlatformSupport/HTTPClient.swift": "d36c06ed785449af32bc5ad02cbb16565b8c33493bcc06fcc6a6c0abd59666a1",
+    "Sources/PlatformSupport/LazyLoader.swift": "8210e04c0878f9b5202a80492590263c54fac1994a895bd6424e6f1fcbcd6315",
+    "Sources/PlatformSupport/Log.swift": "d4d09d83a4c4a1169bbdc38e5e493e37c241f72b42ff99b4ca20e9b32ead5232",
+    "Sources/PlatformSupport/MessageError.swift": "8dbf8dd730f739f7764aac3dbca302b58dcfb2743ac513efc8ad70ec0f4bd3e0",
+    "Sources/Usage/AppIdentity.swift": "6b9c0d842ff10ee35d3778ff907185d371c1cbce13e673c979d93d44636bb705",
+    "Sources/Usage/DesertAnt.swift": "cd518c3dd97c02dddef63d846119c7168250a7a5e0b5bf87665d76418fb4056d",
+    "Sources/Usage/Identity.swift": "52d9c80037aecae1474be343d9e9a4ee62aeb2ff362745900fb194a0f1dcd2d9",
+    "Sources/Usage/LicenseToken.swift": "437e32e55315d170dea6bf0bfd858292717515a1b41b5ecde70d4d813c21f763",
+    "Sources/Usage/LicenseVerifier.swift": "ece565019fd8270b13fc45e6a118167a2309588d21b9cd339a0c783f99abecf1",
+    "Sources/Usage/Licensing.swift": "fb42241cf66d039eae117d59394a2812d4de6de8ea3e8be47d1ee0ae07101463",
+    "Sources/Usage/Storage.swift": "5b2f56505ab00b0e3b8982e9ab94978b3e8c136083a869c084befc0760cb5cf7",
+    "Sources/Usage/TelemetryDebug.swift": "b2d7b232b677716a99f83b317a17ca341f08ec4eacf168112fc3947fad3e2c9f",
+    "Sources/Usage/Wire.swift": "6a612912b93e188e0a4b1307ec948fca92dba354e629d768321cffb4b92f4113",
+    "Sources/Voz/Catalog.swift": "7e3938b086f566d33e9206b3835b4517355bbfeaf61952b28322c247a0ac60f5",
+    "Sources/Voz/Voz.swift": "38a8a5a7742c25652abd40bfa0b5ac5e86b47fe55cee76a9168d2b68d086f6f5"
+  }
+}

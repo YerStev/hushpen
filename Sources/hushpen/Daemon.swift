@@ -43,7 +43,7 @@ final class Daemon: NSObject, NSApplicationDelegate {
         installSignalHandling()
         preloadModel()
 
-        log("ready. Hotkey \(settings.hotkey). Paste: \(settings.pasteAutomatically ? "automatic" : "off"). Cleanup: \(settings.cleanup ? "on" : "off"). Usage reporting: \(Telemetry.statusText)")
+        log("ready. Hotkey \(settings.hotkey). Paste: \(settings.pasteAutomatically ? "automatic" : "off"). Cleanup: \(settings.cleanup ? "on" : "off"). License requests: \(Telemetry.statusText)")
         if settings.pasteAutomatically && !Paste.isTrusted {
             log("automatic paste is enabled but Accessibility access is missing; requesting permission.")
             Paste.requestTrust()
@@ -125,7 +125,7 @@ final class Daemon: NSObject, NSApplicationDelegate {
                 try? await Task.sleep(for: .seconds(8))
                 exit(ExitCode.success.rawValue)
             }
-            await models.flushUsage()
+            await models.flushLicense()
             // llama.cpp's Metal backend must be freed before the process exits.
             await cleanup?.shutDown()
             self?.log("stopped.")

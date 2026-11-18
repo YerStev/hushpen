@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 for script in scripts/*.sh Setup.command; do bash -n "$script"; done
-# Policy: usage reporting stays on (model license), no network listener,
+# Policy: SDK licensing stays unmodified, no network listener,
 # English source text.
 python3 - <<'CHECK_POLICY'
 from pathlib import Path

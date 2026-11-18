@@ -6,7 +6,7 @@ One process, the login service (`hushpen --daemon`, started by
 `~/Library/LaunchAgents/io.github.yerstev.hushpen.agent.plist`), does everything:
 
 1. It registers the shortcut and loads the model at startup. The model stays
-   in memory (about 80 MB) so dictations start immediately.
+   loaded so dictations start immediately; see the ASR results for measured RSS.
 2. A shortcut press opens the microphone. Audio is kept in memory and resampled
    to 16 kHz mono. Recording stops after 300 seconds at the latest.
 3. While you speak, the audio after the last settled word is transcribed about
@@ -84,7 +84,7 @@ with the hash saved when the model was registered; a changed model is rejected.
 | `Output.swift`, `Paste.swift` | Clipboard and ⌘V |
 | `Hotkey.swift` | Key combination and Fn shortcuts |
 | `Setup.swift` | Setup window shown when the app is opened |
-| `Telemetry.swift` | Flushes SDK usage before the service exits |
+| `Telemetry.swift` | Awaits SDK license requests before the service exits |
 
 ## Commands
 
@@ -130,17 +130,53 @@ security find-identity -v -p codesigning
 HUSHPEN_SIGN_IDENTITY="<SHA-1 from above>" ./scripts/install.sh
 ```
 
-## SDK and usage reporting
+## SDK licensing and source audit (2026-11-10)
 
-The app pins `desert-ant-core` 3.5.0 (`Package.resolved`).
-`scripts/audit-sdk-network.sh` fails when the SDK's network-capable files or the
-report fields change, so an SDK update needs a review first. The app uses the
-SDK's public `Voz.download` for the model and never disables usage reporting:
-the model license does not allow it.
+The app pins desert-ant-core 4.3.0 and Voz v0.5.0 (Hugging Face tag commit
+81940d2b41329e1e157acbac8af95e23aa4e224b). The SDK catalog confirms Parakeet
+TDT 0.6B v3; the Apple initializer defaults to CPU and Neural Engine.
+The public download, synchronous model-directory initializer and transcription
+APIs remain compatible. Model assets live in a separate versioned directory;
+the old v0.1.0 assets are retained. The install script explicitly migrates the
+old model registration instead of accepting any matching old checksum.
 
-macOS cannot restrict a single process to one host without a Network Extension
-(`sandbox-exec` only accepts `*` or `localhost` as hosts), so hushpen does not
-try. Do not block `events.desertant.com`; that breaks the license terms.
+Reviewed the 4.3.0 Sources/Usage implementation (Licensing, Wire, Identity,
+AppIdentity, Storage, LicenseToken, LicenseVerifier, DesertAnt and
+TelemetryDebug), PlatformSupport/HTTPClient, and ModelStore transport,
+distribution, manifests and Hub authorization code before changing the baseline.
+The old ingest transport and transcription counters are gone. Model load queues
+POST /api/v1/license and /api/v1/activate on https://events.desertant.com.
+The grant's fields are installId, model, modelVersion, sdk (name/version),
+platform (server on macOS), app (id), and an optional key. Activation carries a
+signed license token and optional key. Native API keys use Authorization Bearer;
+hushpen supplies none. There are no audio, text, transcription-count or device
+context fields. A random installation ID and signed license state are persisted
+in UserDefaults. Verified, activated grants are cached to their period end;
+network failures retry after five minutes, other failures back off (one minute
+to six hours), terminal grant errors wait one day. Flush awaits in-flight work,
+not delayed retries. Model registration also awaits pending license requests
+before its short-lived validation instance is released or the CLI exits.
+No endpoint override, blocking or licensing changes are
+introduced by hushpen.
+
+ModelStore downloads manifests/files from Hugging Face, follows CDN redirects,
+and checks size and SHA-256. HF_TOKEN is attached only to huggingface.co URLs;
+redirect handling clears Authorization when the destination host changes. The optional Xet
+transport is guarded by canImport(Xet); this dependency graph does not enable
+that trait. PlatformSupport implements generic platform HTTP; Apple uses
+URLSession. No audio upload path was found in the reviewed call sites. This is
+a source review, not a packet-capture or OS isolation guarantee.
+
+Expanded HTTP-call detection also finds HostBridge/JNI.swift (Android host
+method lookup) and CoreAndroidTests/CoreBridge.swift (an Android-only test
+request). Reviewed these call sites; neither executes in the Apple product.
+Their source hashes are included in the gate.
+
+The audit retains the network-file inventory and now hashes every Swift file
+in Usage, ModelStore and PlatformSupport, plus the Voz catalog and load hooks.
+It checks exact grant/activation fields and endpoints, so edits that preserve a
+field count also require review. Update the baseline only after documenting a
+new source review here. Never disable or redirect SDK license requests.
 
 ## Troubleshooting
 

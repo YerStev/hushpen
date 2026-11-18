@@ -1,0 +1,862 @@
+{
+  "source": "https://github.com/cjpais/Handy/blob/v0.10.0/src-tauri/src/catalog/catalog.json",
+  "transcribeCpp": "0.4.0",
+  "models": [
+    {
+      "id": "nemotron-3.5-asr-streaming-0.6b",
+      "name": "Nemotron Streaming 3.5",
+      "repository": "handy-computer/nemotron-3.5-asr-streaming-0.6b-gguf",
+      "revision": "6d44e540bc31b0de1dbe174a3cea87f53a7f22fb",
+      "family": "parakeet",
+      "languages": [
+        "en-US",
+        "en-GB",
+        "es-US",
+        "es-ES",
+        "fr-FR",
+        "fr-CA",
+        "it-IT",
+        "pt-BR",
+        "pt-PT",
+        "nl-NL",
+        "de-DE",
+        "tr-TR",
+        "ru-RU",
+        "ar-AR",
+        "hi-IN",
+        "ja-JP",
+        "ko-KR",
+        "vi-VN",
+        "uk-UA",
+        "pl-PL",
+        "sv-SE",
+        "cs-CZ",
+        "nb-NO",
+        "da-DK",
+        "bg-BG",
+        "fi-FI",
+        "hr-HR",
+        "sk-SK",
+        "zh-CN",
+        "hu-HU",
+        "ro-RO",
+        "et-EE"
+      ],
+      "quant": "Q8_0",
+      "minEngine": "0.2.4",
+      "files": {
+        "F32": {
+          "filename": "nemotron-3.5-asr-streaming-0.6b-F32.gguf",
+          "size": 2552277984,
+          "sha256": "fbbc82e8e1084301a670fbc4d79c69c0c8980da506352fd83e74a182f38f5b78"
+        },
+        "F16": {
+          "filename": "nemotron-3.5-asr-streaming-0.6b-F16.gguf",
+          "size": 1277750240,
+          "sha256": "f21a0cea64d232981def7f8f2b7ab322459703a2e89359962c042c57159755b1"
+        },
+        "Q8_0": {
+          "filename": "nemotron-3.5-asr-streaming-0.6b-Q8_0.gguf",
+          "size": 751094240,
+          "sha256": "b94545b313b3223fda7b2857a52681da813935c2127643d1e9ff0c23d988089c"
+        },
+        "Q6_K": {
+          "filename": "nemotron-3.5-asr-streaming-0.6b-Q6_K.gguf",
+          "size": 621356512,
+          "sha256": "4ff802c6207c4a7df23242003fd2aa849a1ab02bba6bc80c3db02e7e82606c28"
+        },
+        "Q5_K_M": {
+          "filename": "nemotron-3.5-asr-streaming-0.6b-Q5_K_M.gguf",
+          "size": 559647200,
+          "sha256": "86429e8c4f7fdcf9b3312269ad1ca6669478ba7805331c4aea7a2e33e9910d65"
+        },
+        "Q4_K_M": {
+          "filename": "nemotron-3.5-asr-streaming-0.6b-Q4_K_M.gguf",
+          "size": 495831520,
+          "sha256": "41c99fa5fb6f3d35f68e79adc3e755eca2232a8d921178bd647b71194792b8fd"
+        }
+      }
+    },
+    {
+      "id": "canary-180m-flash",
+      "name": "Canary 180M Flash",
+      "repository": "handy-computer/canary-180m-flash-gguf",
+      "revision": "46b86384d1db59108d6e060a0fc00924cb58499f",
+      "family": "canary",
+      "languages": [
+        "en",
+        "de",
+        "es",
+        "fr"
+      ],
+      "quant": "Q8_0",
+      "minEngine": "0.3.0",
+      "files": {
+        "F32": {
+          "filename": "canary-180m-flash-F32.gguf",
+          "size": 756498208,
+          "sha256": "244ea53ee99e4763579143f7b0f8d001a42af8300aa1f7b4cbf44520a1314266"
+        },
+        "F16": {
+          "filename": "canary-180m-flash-F16.gguf",
+          "size": 381632288,
+          "sha256": "ae293ae01819e3279c0e7ea8fb3e814e60ecb0380d68debd11d51e93da328871"
+        },
+        "Q8_0": {
+          "filename": "canary-180m-flash-Q8_0.gguf",
+          "size": 218447648,
+          "sha256": "f942ab746040b531a29ab78ca3afc8dc9564efd8e4c942b5541e53644be9c408"
+        },
+        "Q6_K": {
+          "filename": "canary-180m-flash-Q6_K.gguf",
+          "size": 176291616,
+          "sha256": "c0c6733fb8b268b1774b11778904fad8325334a2d3ab57cb7cd7ecf4b1fb01e0"
+        },
+        "Q5_K_M": {
+          "filename": "canary-180m-flash-Q5_K_M.gguf",
+          "size": 158704416,
+          "sha256": "73c4861a43fe848cc7a64c179c08da04e985efac03f3e4684a3f5e94a1bb33fe"
+        },
+        "Q4_K_M": {
+          "filename": "canary-180m-flash-Q4_K_M.gguf",
+          "size": 139223840,
+          "sha256": "0bcbac1d05674625393ac6be663a04d34341e39ea14cd172d4cd35d958343da8"
+        }
+      }
+    },
+    {
+      "id": "cohere-transcribe-03-2026",
+      "name": "Cohere Transcribe",
+      "repository": "handy-computer/cohere-transcribe-03-2026-gguf",
+      "revision": "dfa4adebb64f3076b7b6b90b721275cc069cb421",
+      "family": "cohere_asr",
+      "languages": [
+        "en",
+        "fr",
+        "de",
+        "es",
+        "it",
+        "pt",
+        "nl",
+        "pl",
+        "el",
+        "ar",
+        "ja",
+        "zh",
+        "vi",
+        "ko"
+      ],
+      "quant": "Q8_0",
+      "minEngine": "0.2.4",
+      "files": {
+        "BF16": {
+          "filename": "cohere-transcribe-03-2026-BF16.gguf",
+          "size": 4105263104,
+          "sha256": "72e7625abc358da7b1a27348b18269b4a026eceb792e6ade53c6bb2280d0f3a7"
+        },
+        "F16": {
+          "filename": "cohere-transcribe-03-2026-F16.gguf",
+          "size": 4106644992,
+          "sha256": "65ea095ba78ed938a613cc950da0599b29e16bb5a22a968d7b1fd99d71f13784"
+        },
+        "Q8_0": {
+          "filename": "cohere-transcribe-03-2026-Q8_0.gguf",
+          "size": 2410655232,
+          "sha256": "931916663432fd895423a4291a8400221802b288967ca2d435fc5e3141c9e71e"
+        },
+        "Q6_K": {
+          "filename": "cohere-transcribe-03-2026-Q6_K.gguf",
+          "size": 1972524544,
+          "sha256": "094fb65b9d82d4a52db1d944152e4d7b6629f356bb3beaffdd0891eb527f24f3"
+        },
+        "Q5_K_M": {
+          "filename": "cohere-transcribe-03-2026-Q5_K_M.gguf",
+          "size": 1770270208,
+          "sha256": "14d02f1ad6dd77b3a60f82639879012c3adb4fe25c50a5a47a2c4c661daf1558"
+        },
+        "Q4_K_M": {
+          "filename": "cohere-transcribe-03-2026-Q4_K_M.gguf",
+          "size": 1558162944,
+          "sha256": "0ea56826d8bd5d74b7143a4a04e022dc1bb75452cfae49d98b6acb0c1d16a1fb"
+        }
+      }
+    },
+    {
+      "id": "Voxtral-Mini-4B-Realtime-2602",
+      "name": "Voxtral Mini 4B Realtime",
+      "repository": "handy-computer/Voxtral-Mini-4B-Realtime-2602-gguf",
+      "revision": "b3e1c979e3775cbd0a49a65878a0ec7f06789ed7",
+      "family": "voxtral_realtime",
+      "languages": [
+        "en",
+        "fr",
+        "es",
+        "de",
+        "ru",
+        "zh",
+        "ja",
+        "it",
+        "pt",
+        "nl",
+        "ar",
+        "hi",
+        "ko"
+      ],
+      "quant": "Q8_0",
+      "minEngine": "0.2.4",
+      "files": {
+        "BF16": {
+          "filename": "Voxtral-Mini-4B-Realtime-2602-BF16.gguf",
+          "size": 8868301088,
+          "sha256": "dca6a7bece55858472e1b2df1f928642bdc1e964b1a91f3378c3a4e72fc5bc04"
+        },
+        "F16": {
+          "filename": "Voxtral-Mini-4B-Realtime-2602-F16.gguf",
+          "size": 8879114528,
+          "sha256": "243258ae0ad80f748b18cfd9c8141998157d74eb32fbb131ba8f69e0c01564d7"
+        },
+        "Q8_0": {
+          "filename": "Voxtral-Mini-4B-Realtime-2602-Q8_0.gguf",
+          "size": 4731791648,
+          "sha256": "6fb22249463c1e7a600d920ad732e2dd0a231510e9db59fb8061d3d1d48d0c67"
+        },
+        "Q6_K": {
+          "filename": "Voxtral-Mini-4B-Realtime-2602-Q6_K.gguf",
+          "size": 3661018912,
+          "sha256": "92038784cffa20ea8ee925f10fd28c110285124d94730eacce48bab6c214fa48"
+        },
+        "Q5_K_M": {
+          "filename": "Voxtral-Mini-4B-Realtime-2602-Q5_K_M.gguf",
+          "size": 3281439008,
+          "sha256": "e20a7582c5cf8159454c909b7f57b184b287cb3d7c3ec85744727a2cec51b08f"
+        },
+        "Q4_K_M": {
+          "filename": "Voxtral-Mini-4B-Realtime-2602-Q4_K_M.gguf",
+          "size": 2830493984,
+          "sha256": "39dc1f65539373a406edea7490505822d77c12edff521744678717eef4da4723"
+        }
+      }
+    },
+    {
+      "id": "parakeet-ultra",
+      "name": "Parakeet Ultra",
+      "repository": "handy-computer/parakeet-ultra-gguf",
+      "revision": "39eeb55181f0d354fd934f06e92fd8d5037fed8e",
+      "family": "parakeet",
+      "languages": [
+        "en",
+        "de",
+        "fr",
+        "es",
+        "it",
+        "pt",
+        "ru",
+        "uk",
+        "hr",
+        "sl",
+        "lv",
+        "lt",
+        "et",
+        "fi",
+        "sv",
+        "da",
+        "nl",
+        "pl",
+        "cs",
+        "sk",
+        "hu",
+        "ro",
+        "bg",
+        "el",
+        "mt"
+      ],
+      "quant": "Q8_0",
+      "minEngine": "0.4.0",
+      "files": {
+        "F32": {
+          "filename": "parakeet-ultra-F32.gguf",
+          "size": 2509290240,
+          "sha256": "ae1df0bc1abd85407718b9be718634aad81cbba44ae18da078cc0dfa2d6eb5de"
+        },
+        "F16": {
+          "filename": "parakeet-ultra-F16.gguf",
+          "size": 1256724448,
+          "sha256": "cd97f94fa50a034a9019a47e2ed7a2de3963eed8316d1df4de9efdccca6fe78d"
+        },
+        "Q8_0": {
+          "filename": "parakeet-ultra-Q8_0.gguf",
+          "size": 740363168,
+          "sha256": "007a59761e9258779f189df396b50d12b83bb5b79e66df4b955c230d2f2a0a59"
+        },
+        "Q6_K": {
+          "filename": "parakeet-ultra-Q6_K.gguf",
+          "size": 611196832,
+          "sha256": "ba146253d9b5eb7c729dfa897174cb5bad0a7d05129863805e0caf7d571c7493"
+        },
+        "Q5_K_M": {
+          "filename": "parakeet-ultra-Q5_K_M.gguf",
+          "size": 549800864,
+          "sha256": "f6e3d8172547a3bb468e92ff395696e6d2e0371a9e52690a27741b4e8561c997"
+        },
+        "Q4_K_M": {
+          "filename": "parakeet-ultra-Q4_K_M.gguf",
+          "size": 486280096,
+          "sha256": "c69b7a5f9071a7afd8a1818ef7ae542c386c4b01ed0cac380c19a99947646bf9"
+        }
+      }
+    },
+    {
+      "id": "parakeet-tdt-0.6b-v3",
+      "name": "Parakeet TDT 0.6B v3",
+      "repository": "handy-computer/parakeet-tdt-0.6b-v3-gguf",
+      "revision": "85ac09ea12fc4b1112fa76810059364bc6adc9de",
+      "family": "parakeet",
+      "languages": [
+        "bg",
+        "hr",
+        "cs",
+        "da",
+        "nl",
+        "en",
+        "et",
+        "fi",
+        "fr",
+        "de",
+        "el",
+        "hu",
+        "it",
+        "lv",
+        "lt",
+        "mt",
+        "pl",
+        "pt",
+        "ro",
+        "ru",
+        "sk",
+        "sl",
+        "es",
+        "sv",
+        "uk"
+      ],
+      "quant": "Q8_0",
+      "minEngine": "0.2.4",
+      "files": {
+        "F32": {
+          "filename": "parakeet-tdt-0.6b-v3-F32.gguf",
+          "size": 2508435616,
+          "sha256": "bbd36acd8c6fbb817e658e3acc9f75002cb6a74932c687e74fefccfcc7b9f47e"
+        },
+        "F16": {
+          "filename": "parakeet-tdt-0.6b-v3-F16.gguf",
+          "size": 1255869856,
+          "sha256": "d9ec7e2c39da7b4fec3e01e71e82c7f7bbe97741e08c0c054091bf3d520a41d3"
+        },
+        "Q8_0": {
+          "filename": "parakeet-tdt-0.6b-v3-Q8_0.gguf",
+          "size": 739508576,
+          "sha256": "5859f77944efcd8eafa23a6350731960b2b55b2203df51f319665c807d802cc7"
+        },
+        "Q6_K": {
+          "filename": "parakeet-tdt-0.6b-v3-Q6_K.gguf",
+          "size": 610342240,
+          "sha256": "ab1bbcbe3e1c4c2ec12ca1df1aeafd22e9043ce7262e4b5f5c5d7d76418a9ae8"
+        },
+        "Q5_K_M": {
+          "filename": "parakeet-tdt-0.6b-v3-Q5_K_M.gguf",
+          "size": 548946272,
+          "sha256": "cc722e76adc1a629fc0b2535de879d99b8160d07ad4c0215e2ca7d7ea0ae4b8f"
+        },
+        "Q4_K_M": {
+          "filename": "parakeet-tdt-0.6b-v3-Q4_K_M.gguf",
+          "size": 485425504,
+          "sha256": "b68557be1e3c40207fd7c4bd9d63f1d3316b963f15325bfb0cc16a8bb0ffd181"
+        }
+      }
+    },
+    {
+      "id": "Qwen3-ASR-0.6B",
+      "name": "Qwen3-ASR 0.6B",
+      "repository": "handy-computer/Qwen3-ASR-0.6B-gguf",
+      "revision": "e4e16599b900eb0cb36e524514756bb92eb092b7",
+      "family": "qwen3_asr",
+      "languages": [
+        "zh",
+        "en",
+        "yue",
+        "ar",
+        "de",
+        "fr",
+        "es",
+        "pt",
+        "id",
+        "it",
+        "ko",
+        "ru",
+        "th",
+        "vi",
+        "ja",
+        "tr",
+        "hi",
+        "ms",
+        "nl",
+        "sv",
+        "da",
+        "fi",
+        "pl",
+        "cs",
+        "fil",
+        "fa",
+        "el",
+        "ro",
+        "hu",
+        "mk"
+      ],
+      "quant": "Q8_0",
+      "minEngine": "0.2.4",
+      "files": {
+        "BF16": {
+          "filename": "Qwen3-ASR-0.6B-BF16.gguf",
+          "size": 1571490016,
+          "sha256": "dadb8196937aa6b998a94124a043fce694e0ab6c3c6eb0ae1669fa49d04aab84"
+        },
+        "F16": {
+          "filename": "Qwen3-ASR-0.6B-F16.gguf",
+          "size": 1579793056,
+          "sha256": "5c90e4b1a72a4c59cd12afa5ebb0cc8628848148f2b337d025cc5121ae4d2eea"
+        },
+        "Q8_0": {
+          "filename": "Qwen3-ASR-0.6B-Q8_0.gguf",
+          "size": 850423456,
+          "sha256": "f081b2d5e23bd669d92cc331d722a8a0681943b8e6f34b48996fd5c319b5acd8"
+        },
+        "Q6_K": {
+          "filename": "Qwen3-ASR-0.6B-Q6_K.gguf",
+          "size": 690417824,
+          "sha256": "3b051f108f03c0c91bbe1a3b2c1ee15e3ed51e4caec2a48751b01f2a21441cc3"
+        },
+        "Q5_K_M": {
+          "filename": "Qwen3-ASR-0.6B-Q5_K_M.gguf",
+          "size": 645356192,
+          "sha256": "062a7bcb18675c2fe5ffd0e8b354eac6a1ceada9b2af9ef7168746ae16b54358"
+        },
+        "Q4_K_M": {
+          "filename": "Qwen3-ASR-0.6B-Q4_K_M.gguf",
+          "size": 589560480,
+          "sha256": "5b58f32a58ffa2c8783e0b0963485623e286e6272d953dfc9e28bc3447dee0c0"
+        }
+      }
+    },
+    {
+      "id": "canary-1b-v2",
+      "name": "Canary 1B v2",
+      "repository": "handy-computer/canary-1b-v2-gguf",
+      "revision": "58d13c2c0102229aad45f7e19a77ddc42b41dd9a",
+      "family": "canary",
+      "languages": [
+        "bg",
+        "hr",
+        "cs",
+        "da",
+        "nl",
+        "en",
+        "et",
+        "fi",
+        "fr",
+        "de",
+        "el",
+        "hu",
+        "it",
+        "lv",
+        "lt",
+        "mt",
+        "pl",
+        "pt",
+        "ro",
+        "sk",
+        "sl",
+        "es",
+        "sv",
+        "ru",
+        "uk"
+      ],
+      "quant": "Q8_0",
+      "minEngine": "0.2.4",
+      "files": {
+        "F32": {
+          "filename": "canary-1b-v2-F32.gguf",
+          "size": 3920657120,
+          "sha256": "b0b48b62b2c68f2779c49481de102715c5eaadbe084bca7fdddc7912f9c20e8b"
+        },
+        "F16": {
+          "filename": "canary-1b-v2-F16.gguf",
+          "size": 1966111456,
+          "sha256": "eadda53cd1652d65cd12ff7ac4b7dc64cba1ce9837aae0c86e4222e8db89e320"
+        },
+        "Q8_0": {
+          "filename": "canary-1b-v2-Q8_0.gguf",
+          "size": 1144290016,
+          "sha256": "224f83d1bc487b3303b495a7d6874912fdece93de19d1a04b550829c30a5d289"
+        },
+        "Q6_K": {
+          "filename": "canary-1b-v2-Q6_K.gguf",
+          "size": 931986144,
+          "sha256": "6567c2d601fccacf9809fc230edefde05728340f65860bbe91cfd72d0a5eea9d"
+        },
+        "Q5_K_M": {
+          "filename": "canary-1b-v2-Q5_K_M.gguf",
+          "size": 836664032,
+          "sha256": "9c3a893c93795438baf9b4b1c853c39b60316c3a0d259a3ba6e284712f5ddb71"
+        },
+        "Q4_K_M": {
+          "filename": "canary-1b-v2-Q4_K_M.gguf",
+          "size": 735476448,
+          "sha256": "49e0a67e219bec95a254c2348460b6350e75a7ac6f93a131e48244b4c7cb53b9"
+        }
+      }
+    },
+    {
+      "id": "whisper-large-v3-turbo",
+      "name": "Whisper Large v3 Turbo",
+      "repository": "handy-computer/whisper-large-v3-turbo-gguf",
+      "revision": "5eaf945c7978e564bae5b28a5b1639dd93c2bfb1",
+      "family": "whisper",
+      "languages": [
+        "af",
+        "am",
+        "ar",
+        "as",
+        "az",
+        "ba",
+        "be",
+        "bg",
+        "bn",
+        "bo",
+        "br",
+        "bs",
+        "ca",
+        "cs",
+        "cy",
+        "da",
+        "de",
+        "el",
+        "en",
+        "es",
+        "et",
+        "eu",
+        "fa",
+        "fi",
+        "fo",
+        "fr",
+        "gl",
+        "gu",
+        "haw",
+        "ha",
+        "he",
+        "hi",
+        "hr",
+        "ht",
+        "hu",
+        "hy",
+        "id",
+        "is",
+        "it",
+        "ja",
+        "jw",
+        "ka",
+        "kk",
+        "km",
+        "kn",
+        "ko",
+        "la",
+        "lb",
+        "ln",
+        "lo",
+        "lt",
+        "lv",
+        "mg",
+        "mi",
+        "mk",
+        "ml",
+        "mn",
+        "mr",
+        "ms",
+        "mt",
+        "my",
+        "ne",
+        "nl",
+        "nn",
+        "no",
+        "oc",
+        "pa",
+        "pl",
+        "ps",
+        "pt",
+        "ro",
+        "ru",
+        "sa",
+        "sd",
+        "si",
+        "sk",
+        "sl",
+        "sn",
+        "so",
+        "sq",
+        "sr",
+        "su",
+        "sv",
+        "sw",
+        "ta",
+        "te",
+        "tg",
+        "th",
+        "tk",
+        "tl",
+        "tr",
+        "tt",
+        "uk",
+        "ur",
+        "uz",
+        "vi",
+        "yi",
+        "yo",
+        "yue",
+        "zh"
+      ],
+      "quant": "Q8_0",
+      "minEngine": "0.2.4",
+      "files": {
+        "F16": {
+          "filename": "whisper-large-v3-turbo-F16.gguf",
+          "size": 1625935520,
+          "sha256": "e1d0144e9afc9f479d9e51fc92c7dea9dc36059655eeb3819f16ad2de779046a"
+        },
+        "Q8_0": {
+          "filename": "whisper-large-v3-turbo-Q8_0.gguf",
+          "size": 886381760,
+          "sha256": "b2e30cc286bc9f3aba4db9099fc7403543497c05ce7100d0d83091ddfd25a183"
+        },
+        "Q6_K": {
+          "filename": "whisper-large-v3-turbo-Q6_K.gguf",
+          "size": 692536928,
+          "sha256": "3881dc17bf345f7ce4a3c48327074951e1550c8a1e89fa58d554d9f26a1b6274"
+        },
+        "Q5_K_M": {
+          "filename": "whisper-large-v3-turbo-Q5_K_M.gguf",
+          "size": 619628128,
+          "sha256": "977b5db4e004349dffd1ab9caa10ba5aaba3fc3edd3ba72cadb84328a3203e36"
+        },
+        "Q4_K_M": {
+          "filename": "whisper-large-v3-turbo-Q4_K_M.gguf",
+          "size": 536069728,
+          "sha256": "ecfe9b6beb4ab18fef49187cc968cc74b5168b94629c8830e2ca6b794c6e25ed"
+        }
+      }
+    },
+    {
+      "id": "whisper-large-v3",
+      "name": "Whisper Large v3",
+      "repository": "handy-computer/whisper-large-v3-gguf",
+      "revision": "e3e29bee6389c7da4a141406f07bb80ddac5337c",
+      "family": "whisper",
+      "languages": [
+        "af",
+        "am",
+        "ar",
+        "as",
+        "az",
+        "ba",
+        "be",
+        "bg",
+        "bn",
+        "bo",
+        "br",
+        "bs",
+        "ca",
+        "cs",
+        "cy",
+        "da",
+        "de",
+        "el",
+        "en",
+        "es",
+        "et",
+        "eu",
+        "fa",
+        "fi",
+        "fo",
+        "fr",
+        "gl",
+        "gu",
+        "haw",
+        "ha",
+        "he",
+        "hi",
+        "hr",
+        "ht",
+        "hu",
+        "hy",
+        "id",
+        "is",
+        "it",
+        "ja",
+        "jw",
+        "ka",
+        "kk",
+        "km",
+        "kn",
+        "ko",
+        "la",
+        "lb",
+        "ln",
+        "lo",
+        "lt",
+        "lv",
+        "mg",
+        "mi",
+        "mk",
+        "ml",
+        "mn",
+        "mr",
+        "ms",
+        "mt",
+        "my",
+        "ne",
+        "nl",
+        "nn",
+        "no",
+        "oc",
+        "pa",
+        "pl",
+        "ps",
+        "pt",
+        "ro",
+        "ru",
+        "sa",
+        "sd",
+        "si",
+        "sk",
+        "sl",
+        "sn",
+        "so",
+        "sq",
+        "sr",
+        "su",
+        "sv",
+        "sw",
+        "ta",
+        "te",
+        "tg",
+        "th",
+        "tk",
+        "tl",
+        "tr",
+        "tt",
+        "uk",
+        "ur",
+        "uz",
+        "vi",
+        "yi",
+        "yo",
+        "yue",
+        "zh"
+      ],
+      "quant": "Q8_0",
+      "minEngine": "0.2.4",
+      "files": {
+        "F16": {
+          "filename": "whisper-large-v3-F16.gguf",
+          "size": 3107236640,
+          "sha256": "e633ab1d74b0e98f4f57daedaee34291297dbbf01389bda3d890766600c1c584"
+        },
+        "Q8_0": {
+          "filename": "whisper-large-v3-Q8_0.gguf",
+          "size": 1668741440,
+          "sha256": "2fa1a5f179f8a511a53e2108db270aa4af3ce08cd976af4180e2854666bb4ba3"
+        },
+        "Q6_K": {
+          "filename": "whisper-large-v3-Q6_K.gguf",
+          "size": 1297130208,
+          "sha256": "88e6dc60bd0538da145a50c19f4778e4a106fe28713adeeca43163215ee02805"
+        },
+        "Q5_K_M": {
+          "filename": "whisper-large-v3-Q5_K_M.gguf",
+          "size": 1161143008,
+          "sha256": "6053d0fd69a0fd48b8fea5ea7a52b9e0cde389343566fa30e453a1b2b258dc38"
+        },
+        "Q4_K_M": {
+          "filename": "whisper-large-v3-Q4_K_M.gguf",
+          "size": 997303008,
+          "sha256": "6fe933811cec4cd3159debc46520ecd3aac6c7e322ece2ac61fcfdab184e1fe0"
+        }
+      }
+    },
+    {
+      "id": "parakeet-primeline",
+      "name": "Parakeet Primeline",
+      "repository": "handy-computer/parakeet-primeline-gguf",
+      "revision": "90880dc372f8cc0025ae7a08d2c887278124a538",
+      "family": "parakeet",
+      "languages": [
+        "bg",
+        "hr",
+        "cs",
+        "da",
+        "nl",
+        "en",
+        "et",
+        "fi",
+        "fr",
+        "de",
+        "el",
+        "hu",
+        "it",
+        "lv",
+        "lt",
+        "mt",
+        "pl",
+        "pt",
+        "ro",
+        "ru",
+        "sk",
+        "sl",
+        "es",
+        "sv",
+        "uk"
+      ],
+      "quant": "Q8_0",
+      "minEngine": "0.2.4",
+      "files": {
+        "F32": {
+          "filename": "parakeet-primeline-F32.gguf",
+          "size": 2508435680,
+          "sha256": "6075ededee05ad520b3402bf089d00cd87819025b8509f746587c822d99a9a2d"
+        },
+        "F16": {
+          "filename": "parakeet-primeline-F16.gguf",
+          "size": 1255869920,
+          "sha256": "a6f626fa7263cf55a27eda312d1f91dfe6edfeb8de85a5536fbb3cb93af064e1"
+        },
+        "Q8_0": {
+          "filename": "parakeet-primeline-Q8_0.gguf",
+          "size": 739508640,
+          "sha256": "dbd1ec2985aea64d16550a0068ea9153c0bc01955bf2a5c18b74ca213546d3cd"
+        },
+        "Q6_K": {
+          "filename": "parakeet-primeline-Q6_K.gguf",
+          "size": 610342304,
+          "sha256": "62301f4a2c393421a4162864718e85edac7eb85ce8ed82c343a4b994b6d85594"
+        },
+        "Q5_K_M": {
+          "filename": "parakeet-primeline-Q5_K_M.gguf",
+          "size": 548946336,
+          "sha256": "a1dd12b7f374c33d5e33a61c8a852035d27064cefe53f8cdfc3410cddf3b31c8"
+        },
+        "Q4_K_M": {
+          "filename": "parakeet-primeline-Q4_K_M.gguf",
+          "size": 485425568,
+          "sha256": "8b01f1893fa1db166d8b08375f8300c140fc7f110af7e9b68480a27b145dad7d"
+        }
+      }
+    }
+  ]
+}

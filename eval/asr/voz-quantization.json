@@ -1,0 +1,48 @@
+[
+  {
+    "revision": "voz-v0.1.0",
+    "components": {
+      "encoder": {
+        "mil_sha256": "a215a17e2f38f6562eff9904789c06d688876dcd8c42c90fd87f07e6f6f4bb6b",
+        "quantized_type_tokens": [
+          "uint6"
+        ],
+        "quantization_op_occurrences": {
+          "constexpr_lut_to_dense": 271
+        }
+      },
+      "decoder": {
+        "mil_sha256": "95cbd3639c68c0a7a1c99924673d407fd5164732d388fcc9a226c6c964e20b40",
+        "quantized_type_tokens": [
+          "uint6"
+        ],
+        "quantization_op_occurrences": {
+          "constexpr_lut_to_dense": 5
+        }
+      }
+    }
+  },
+  {
+    "revision": "voz-v0.5.0",
+    "components": {
+      "encoder": {
+        "mil_sha256": "974c88c39c840c21b031f10529943516d1d8469535f0ddc3571cddaab29574e4",
+        "quantized_type_tokens": [
+          "int4"
+        ],
+        "quantization_op_occurrences": {
+          "constexpr_blockwise_shift_scale": 271
+        }
+      },
+      "decoder": {
+        "mil_sha256": "1f331acb4a4bb999c792db0a3725d790c046311ab9941ddbe0ee7e3418ae1e14",
+        "quantized_type_tokens": [
+          "int8"
+        ],
+        "quantization_op_occurrences": {
+          "constexpr_blockwise_shift_scale": 30
+        }
+      }
+    }
+  }
+]

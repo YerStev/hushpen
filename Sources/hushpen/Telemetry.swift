@@ -2,14 +2,12 @@ import DesertAnt
 import Foundation
 import Voz
 
-// Leave reporting policy, identity, payload and transport to the unmodified SDK.
+// Leave license identity, payload, retries and transport to the unmodified SDK.
 enum Telemetry {
-    static var statusText: String {
-        usageDisabled() ? "disabled by an external SDK setting" : "enabled (SDK default)"
-    }
+    static var statusText: String { "enabled (SDK default)" }
 
-    // The SDK keeps a weak session hook; retain the model until flushing ends.
-    static func flushPendingUsage(keeping model: Voz) async {
+    // The SDK queues license work at model load. Await in-flight requests on exit.
+    static func flushPendingLicense(keeping model: Voz) async {
         await TelemetryDebug.shared.flushAndWait()
         withExtendedLifetime(model) {}
     }

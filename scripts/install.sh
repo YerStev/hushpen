@@ -36,7 +36,7 @@ fi
 echo "==> Installing $APP"
 ./scripts/make-app.sh >/dev/null
 
-if "$BIN" --verify | grep -q "(matches)"; then
+if "$BIN" --verify | grep -q "(matches)" && "$BIN" --verify | grep -q "^Revision: *Voz v0.5.0$"; then
     echo "==> Model already installed"
 else
     echo "==> Downloading the speech model"

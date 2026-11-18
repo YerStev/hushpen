@@ -23,7 +23,7 @@ enum Config {
     static func loadModel() throws -> ModelConfig {
         guard let data = try? Data(contentsOf: Paths.modelConfig) else {
             throw ToolError(.modelMissing, """
-                No model installed. Download it (about 470 MB):
+                No model installed. Download it (about 340 MB):
 
                   hushpen --download-model
                 """)

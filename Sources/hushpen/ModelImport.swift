@@ -3,7 +3,7 @@ import Voz
 
 enum ModelImport {
     static var defaultDirectory: URL {
-        Paths.stateDirectory.appendingPathComponent("models/voz-v0.1.0", isDirectory: true)
+        Paths.stateDirectory.appendingPathComponent("models/voz-v0.5.0", isDirectory: true)
     }
 
     // Fetches the pinned revision from huggingface.co through the SDK, which
@@ -14,7 +14,7 @@ enum ModelImport {
             try Paths.ensureStateDirectory()
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
             let path = try await Voz.download(directory: directory.path) { progress($0.fraction) }
-            return try prepare(directory: URL(fileURLWithPath: path))
+            return try await prepare(directory: URL(fileURLWithPath: path))
         } catch let error as ToolError {
             throw error
         } catch {
@@ -22,7 +22,7 @@ enum ModelImport {
         }
     }
 
-    static func prepare(directory: URL) throws -> ModelConfig {
+    static func prepare(directory: URL) async throws -> ModelConfig {
         let fm = FileManager.default
         for name in ["meta.json", "vocab.json", "embedding.f16"] {
             let url = directory.appendingPathComponent(name)
@@ -39,6 +39,7 @@ enum ModelImport {
             }
         }
         let model = try Voz(modelDirectory: directory)
+        await Telemetry.flushPendingLicense(keeping: model)
         guard model.sampleRate == Recorder.targetSampleRate else {
             throw ToolError(.modelMissing, "This model uses an unsupported sample rate.")
         }

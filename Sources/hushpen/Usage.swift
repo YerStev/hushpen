@@ -5,7 +5,7 @@ Press the shortcut (default Fn), speak, press it again. The text is pasted
 at your cursor. The menu-bar microphone can stop or discard a recording.
 
 SETUP
-  --download-model         Download, check and register the model (~470 MB)
+  --download-model         Download, check and register the model (~340 MB)
   --set-model PATH         Register a model folder you already have
   --install-agent          Start the service now and at login
   --uninstall-agent        Stop and remove the service
@@ -26,8 +26,8 @@ OTHER
 Restart the service after changing settings:
   launchctl kickstart -k gui/$(id -u)/io.github.yerstev.hushpen.agent
 
-Speech is processed on this Mac. The Voz SDK sends a usage report to
-Desert Ant Labs (installation ID, counts, versions; no audio, no text).
+Speech is processed on this Mac. The Voz SDK requests and activates licenses with Desert Ant Labs
+(installation ID, app ID, model/SDK versions, platform; no audio or text).
 
 EXIT CODES
   0 Success   1 Error   2 Usage   3 Missing model   4 Model checksum mismatch

@@ -1,0 +1,1398 @@
+{
+  "entity_diagnostic": {
+    "method": "Gemma 4 E4B Q4_0 local, greedy, thinking off; reference-only proposals, exact-substring validated; not human verified. First ASR repetition only. Exact normalized span presence, not semantic numeric correctness or hallucinated-entity precision.",
+    "results": [
+      {
+        "engine": "cohere",
+        "source_kind": "human",
+        "n_clips": 6,
+        "span_retention": {
+          "names": {
+            "total": 7,
+            "retained": 6
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 2
+          },
+          "terms": {
+            "total": 5,
+            "retained": 3
+          }
+        }
+      },
+      {
+        "engine": "cohere",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "span_retention": {
+          "names": {
+            "total": 4,
+            "retained": 1
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 1
+          },
+          "terms": {
+            "total": 23,
+            "retained": 11
+          }
+        }
+      },
+      {
+        "engine": "cohere",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "span_retention": {
+          "names": {
+            "total": 20,
+            "retained": 18
+          },
+          "numbers": {
+            "total": 32,
+            "retained": 30
+          },
+          "terms": {
+            "total": 50,
+            "retained": 36
+          }
+        }
+      },
+      {
+        "engine": "cohere-native",
+        "source_kind": "human",
+        "n_clips": 6,
+        "span_retention": {
+          "names": {
+            "total": 7,
+            "retained": 6
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 1
+          },
+          "terms": {
+            "total": 5,
+            "retained": 3
+          }
+        }
+      },
+      {
+        "engine": "cohere-native",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "span_retention": {
+          "names": {
+            "total": 4,
+            "retained": 1
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 4
+          },
+          "terms": {
+            "total": 23,
+            "retained": 20
+          }
+        }
+      },
+      {
+        "engine": "cohere-native",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "span_retention": {
+          "names": {
+            "total": 20,
+            "retained": 20
+          },
+          "numbers": {
+            "total": 32,
+            "retained": 32
+          },
+          "terms": {
+            "total": 50,
+            "retained": 40
+          }
+        }
+      },
+      {
+        "engine": "parakeet-v3",
+        "source_kind": "human",
+        "n_clips": 6,
+        "span_retention": {
+          "names": {
+            "total": 7,
+            "retained": 6
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 1
+          },
+          "terms": {
+            "total": 5,
+            "retained": 4
+          }
+        }
+      },
+      {
+        "engine": "parakeet-v3",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "span_retention": {
+          "names": {
+            "total": 4,
+            "retained": 1
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 4
+          },
+          "terms": {
+            "total": 23,
+            "retained": 17
+          }
+        }
+      },
+      {
+        "engine": "parakeet-v3",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "span_retention": {
+          "names": {
+            "total": 20,
+            "retained": 20
+          },
+          "numbers": {
+            "total": 32,
+            "retained": 32
+          },
+          "terms": {
+            "total": 50,
+            "retained": 40
+          }
+        }
+      },
+      {
+        "engine": "voz-new",
+        "source_kind": "human",
+        "n_clips": 6,
+        "span_retention": {
+          "names": {
+            "total": 7,
+            "retained": 7
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 1
+          },
+          "terms": {
+            "total": 5,
+            "retained": 5
+          }
+        }
+      },
+      {
+        "engine": "voz-new",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "span_retention": {
+          "names": {
+            "total": 4,
+            "retained": 1
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 4
+          },
+          "terms": {
+            "total": 23,
+            "retained": 17
+          }
+        }
+      },
+      {
+        "engine": "voz-new",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "span_retention": {
+          "names": {
+            "total": 20,
+            "retained": 20
+          },
+          "numbers": {
+            "total": 32,
+            "retained": 23
+          },
+          "terms": {
+            "total": 50,
+            "retained": 40
+          }
+        }
+      },
+      {
+        "engine": "voz-old",
+        "source_kind": "human",
+        "n_clips": 6,
+        "span_retention": {
+          "names": {
+            "total": 7,
+            "retained": 6
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 1
+          },
+          "terms": {
+            "total": 5,
+            "retained": 5
+          }
+        }
+      },
+      {
+        "engine": "voz-old",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "span_retention": {
+          "names": {
+            "total": 4,
+            "retained": 1
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 5
+          },
+          "terms": {
+            "total": 23,
+            "retained": 19
+          }
+        }
+      },
+      {
+        "engine": "voz-old",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "span_retention": {
+          "names": {
+            "total": 20,
+            "retained": 20
+          },
+          "numbers": {
+            "total": 32,
+            "retained": 32
+          },
+          "terms": {
+            "total": 50,
+            "retained": 40
+          }
+        }
+      },
+      {
+        "engine": "whisper-german",
+        "source_kind": "human",
+        "n_clips": 6,
+        "span_retention": {
+          "names": {
+            "total": 7,
+            "retained": 6
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 2
+          },
+          "terms": {
+            "total": 5,
+            "retained": 4
+          }
+        }
+      },
+      {
+        "engine": "whisper-german",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "span_retention": {
+          "names": {
+            "total": 4,
+            "retained": 1
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 3
+          },
+          "terms": {
+            "total": 23,
+            "retained": 19
+          }
+        }
+      },
+      {
+        "engine": "whisper-german",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "span_retention": {
+          "names": {
+            "total": 20,
+            "retained": 20
+          },
+          "numbers": {
+            "total": 32,
+            "retained": 32
+          },
+          "terms": {
+            "total": 50,
+            "retained": 40
+          }
+        }
+      },
+      {
+        "engine": "whisper-large",
+        "source_kind": "human",
+        "n_clips": 6,
+        "span_retention": {
+          "names": {
+            "total": 7,
+            "retained": 6
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 2
+          },
+          "terms": {
+            "total": 5,
+            "retained": 3
+          }
+        }
+      },
+      {
+        "engine": "whisper-large",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "span_retention": {
+          "names": {
+            "total": 4,
+            "retained": 1
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 5
+          },
+          "terms": {
+            "total": 23,
+            "retained": 20
+          }
+        }
+      },
+      {
+        "engine": "whisper-large",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "span_retention": {
+          "names": {
+            "total": 20,
+            "retained": 20
+          },
+          "numbers": {
+            "total": 32,
+            "retained": 32
+          },
+          "terms": {
+            "total": 50,
+            "retained": 40
+          }
+        }
+      },
+      {
+        "engine": "whisper-turbo",
+        "source_kind": "human",
+        "n_clips": 6,
+        "span_retention": {
+          "names": {
+            "total": 7,
+            "retained": 6
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 2
+          },
+          "terms": {
+            "total": 5,
+            "retained": 4
+          }
+        }
+      },
+      {
+        "engine": "whisper-turbo",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "span_retention": {
+          "names": {
+            "total": 4,
+            "retained": 1
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 5
+          },
+          "terms": {
+            "total": 23,
+            "retained": 19
+          }
+        }
+      },
+      {
+        "engine": "whisper-turbo",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "span_retention": {
+          "names": {
+            "total": 20,
+            "retained": 20
+          },
+          "numbers": {
+            "total": 32,
+            "retained": 32
+          },
+          "terms": {
+            "total": 50,
+            "retained": 40
+          }
+        }
+      },
+      {
+        "engine": "whisper-turbo-q4",
+        "source_kind": "human",
+        "n_clips": 6,
+        "span_retention": {
+          "names": {
+            "total": 7,
+            "retained": 6
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 1
+          },
+          "terms": {
+            "total": 5,
+            "retained": 3
+          }
+        }
+      },
+      {
+        "engine": "whisper-turbo-q4",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "span_retention": {
+          "names": {
+            "total": 4,
+            "retained": 1
+          },
+          "numbers": {
+            "total": 5,
+            "retained": 5
+          },
+          "terms": {
+            "total": 23,
+            "retained": 19
+          }
+        }
+      },
+      {
+        "engine": "whisper-turbo-q4",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "span_retention": {
+          "names": {
+            "total": 20,
+            "retained": 20
+          },
+          "numbers": {
+            "total": 32,
+            "retained": 22
+          },
+          "terms": {
+            "total": 50,
+            "retained": 40
+          }
+        }
+      }
+    ]
+  },
+  "number_format_diagnostic": {
+    "method": "Reference/hypothesis digit values >=2 define canonical German cardinal/ordinal word variants; exact token-span replacement only. No general numeric semantic verification, no numeric accuracy claim. First repetition only.",
+    "results": [
+      {
+        "engine": "cohere",
+        "source_kind": "human",
+        "n_clips": 6,
+        "reference_words": 169,
+        "edit_distance": 42,
+        "wer": 0.2485207100591716
+      },
+      {
+        "engine": "cohere",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "reference_words": 450,
+        "edit_distance": 188,
+        "wer": 0.4177777777777778
+      },
+      {
+        "engine": "cohere",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "reference_words": 1150,
+        "edit_distance": 74,
+        "wer": 0.06434782608695652
+      },
+      {
+        "engine": "cohere-native",
+        "source_kind": "human",
+        "n_clips": 6,
+        "reference_words": 169,
+        "edit_distance": 15,
+        "wer": 0.08875739644970414
+      },
+      {
+        "engine": "cohere-native",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "reference_words": 450,
+        "edit_distance": 17,
+        "wer": 0.03777777777777778
+      },
+      {
+        "engine": "cohere-native",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "reference_words": 1150,
+        "edit_distance": 10,
+        "wer": 0.008695652173913044
+      },
+      {
+        "engine": "parakeet-v3",
+        "source_kind": "human",
+        "n_clips": 6,
+        "reference_words": 169,
+        "edit_distance": 15,
+        "wer": 0.08875739644970414
+      },
+      {
+        "engine": "parakeet-v3",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "reference_words": 450,
+        "edit_distance": 23,
+        "wer": 0.051111111111111114
+      },
+      {
+        "engine": "parakeet-v3",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "reference_words": 1150,
+        "edit_distance": 10,
+        "wer": 0.008695652173913044
+      },
+      {
+        "engine": "voz-new",
+        "source_kind": "human",
+        "n_clips": 6,
+        "reference_words": 169,
+        "edit_distance": 11,
+        "wer": 0.0650887573964497
+      },
+      {
+        "engine": "voz-new",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "reference_words": 450,
+        "edit_distance": 20,
+        "wer": 0.044444444444444446
+      },
+      {
+        "engine": "voz-new",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "reference_words": 1150,
+        "edit_distance": 23,
+        "wer": 0.02
+      },
+      {
+        "engine": "voz-old",
+        "source_kind": "human",
+        "n_clips": 6,
+        "reference_words": 169,
+        "edit_distance": 12,
+        "wer": 0.07100591715976332
+      },
+      {
+        "engine": "voz-old",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "reference_words": 450,
+        "edit_distance": 16,
+        "wer": 0.035555555555555556
+      },
+      {
+        "engine": "voz-old",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "reference_words": 1150,
+        "edit_distance": 28,
+        "wer": 0.02434782608695652
+      },
+      {
+        "engine": "whisper-german",
+        "source_kind": "human",
+        "n_clips": 6,
+        "reference_words": 169,
+        "edit_distance": 15,
+        "wer": 0.08875739644970414
+      },
+      {
+        "engine": "whisper-german",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "reference_words": 450,
+        "edit_distance": 18,
+        "wer": 0.04
+      },
+      {
+        "engine": "whisper-german",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "reference_words": 1150,
+        "edit_distance": 10,
+        "wer": 0.008695652173913044
+      },
+      {
+        "engine": "whisper-large",
+        "source_kind": "human",
+        "n_clips": 6,
+        "reference_words": 169,
+        "edit_distance": 15,
+        "wer": 0.08875739644970414
+      },
+      {
+        "engine": "whisper-large",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "reference_words": 450,
+        "edit_distance": 13,
+        "wer": 0.028888888888888888
+      },
+      {
+        "engine": "whisper-large",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "reference_words": 1150,
+        "edit_distance": 15,
+        "wer": 0.013043478260869565
+      },
+      {
+        "engine": "whisper-turbo",
+        "source_kind": "human",
+        "n_clips": 6,
+        "reference_words": 169,
+        "edit_distance": 14,
+        "wer": 0.08284023668639054
+      },
+      {
+        "engine": "whisper-turbo",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "reference_words": 450,
+        "edit_distance": 17,
+        "wer": 0.03777777777777778
+      },
+      {
+        "engine": "whisper-turbo",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "reference_words": 1150,
+        "edit_distance": 11,
+        "wer": 0.009565217391304347
+      },
+      {
+        "engine": "whisper-turbo-q4",
+        "source_kind": "human",
+        "n_clips": 6,
+        "reference_words": 169,
+        "edit_distance": 16,
+        "wer": 0.09467455621301775
+      },
+      {
+        "engine": "whisper-turbo-q4",
+        "source_kind": "public_fleurs",
+        "n_clips": 20,
+        "reference_words": 450,
+        "edit_distance": 17,
+        "wer": 0.03777777777777778
+      },
+      {
+        "engine": "whisper-turbo-q4",
+        "source_kind": "synthetic",
+        "n_clips": 30,
+        "reference_words": 1150,
+        "edit_distance": 10,
+        "wer": 0.008695652173913044
+      }
+    ]
+  },
+  "date": "2026-11-10",
+  "hardware": {
+    "chip": "Apple M1 Pro",
+    "cpu_cores": 8,
+    "ram_gib": 16,
+    "macos": "26.6.2",
+    "swift": "6.4"
+  },
+  "runtime": {
+    "mlx": "0.32.4",
+    "mlx_audio": "0.6.5",
+    "mlx_whisper": "0.4.3"
+  },
+  "corpora": {
+    "human": {
+      "clips": 6,
+      "unique_reference_texts": 6,
+      "reference_words": 169,
+      "seconds": 89.48275
+    },
+    "public_fleurs": {
+      "clips": 20,
+      "unique_reference_texts": 20,
+      "reference_words": 450,
+      "seconds": 276.3
+    },
+    "synthetic": {
+      "clips": 30,
+      "unique_reference_texts": 15,
+      "reference_words": 1150,
+      "seconds": 496.816125
+    }
+  },
+  "repetitions": 2,
+  "models": [
+    {
+      "name": "parakeet-v3",
+      "family": "parakeet",
+      "repository": "beshkenadze/parakeet-tdt-0.6b-v3-mlx-4bit",
+      "revision": "beffc63002c6fd5c5477c8c560bc8956c4878eb5",
+      "quantization": {
+        "group_size": 64,
+        "bits": 4,
+        "joint.joint_net.2": false,
+        "decoder.prediction.embed": false
+      },
+      "quantized_modules_by_root": {
+        "encoder": 217,
+        "joint": 2
+      },
+      "weight_files": {
+        "model.safetensors": {
+          "bytes": 486980992,
+          "sha256": "2ca3da6b815437a15a44c175f70c9086258058e13ef7d44dcdeaffc77fcd46c5"
+        }
+      }
+    },
+    {
+      "name": "whisper-turbo",
+      "family": "whisper",
+      "repository": "mlx-community/whisper-large-v3-turbo",
+      "revision": "a4aaeec0636e6fef84abdcbe3544cb2bf7e9f6fb",
+      "quantization": "not declared",
+      "quantized_modules_by_root": {},
+      "weight_files": {
+        "weights.safetensors": {
+          "bytes": 1613977612,
+          "sha256": "951ed3fc1203e6a62467abb2144a96ce7eafca8fa77e3704fdb8635ff3e7f8a6"
+        }
+      }
+    },
+    {
+      "name": "whisper-large",
+      "family": "whisper",
+      "repository": "mlx-community/whisper-large-v3-mlx-4bit",
+      "revision": "d12b5d0043a6fe0c59af321617fba041d4e8e0c8",
+      "quantization": {
+        "bits": 4,
+        "group_size": 64
+      },
+      "quantized_modules_by_root": {
+        "decoder": 320,
+        "encoder": 192
+      },
+      "weight_files": {
+        "weights.npz": {
+          "bytes": 973563040,
+          "sha256": "3bfa3c4e42344ea87a5b81a73992a867088ae076d377042e384b657adea81db9"
+        }
+      }
+    },
+    {
+      "name": "cohere",
+      "family": "cohere_asr",
+      "repository": "beshkenadze/cohere-transcribe-03-2026-mlx-4bit",
+      "revision": "104bc4391b5b1a12b040859793d7148525e1a08c",
+      "conversion": "local inverse export key map, QKV row split; fixed sinusoidal buffer regenerated; strict load and bit-exact tensor reconstruction verified",
+      "quantization": {
+        "bits": 4,
+        "group_size": 64,
+        "mode": "affine"
+      },
+      "quantized_modules_by_root": {
+        "encoder": 433,
+        "encoder_decoder_proj": 1,
+        "log_softmax": 1,
+        "transf_decoder": 81
+      },
+      "weight_files": {
+        "model.safetensors": {
+          "bytes": 1509374338,
+          "sha256": "66a4e50911321c27e73172ba2f971ee69ce95010d9cb9b1e72db07f35bd28a21"
+        }
+      }
+    },
+    {
+      "name": "whisper-german",
+      "family": "whisper",
+      "repository": "mlx-community/whisper-large-v3-turbo-german-f16-q4",
+      "revision": "124e7ec35728c6a28499c577f96b5c228a8b1e52",
+      "quantization": {
+        "group_size": 64,
+        "bits": 4
+      },
+      "quantized_modules_by_root": {
+        "decoder": 32,
+        "encoder": 128
+      },
+      "weight_files": {
+        "weights.npz": {
+          "bytes": 728628832,
+          "sha256": "5648330946342b019dd6286a06cd212ec2ffde4130f83d3f19acb509fc814241"
+        }
+      }
+    },
+    {
+      "name": "whisper-turbo-q4",
+      "family": "whisper",
+      "repository": "mlx-community/whisper-large-v3-turbo",
+      "revision": "a4aaeec0636e6fef84abdcbe3544cb2bf7e9f6fb",
+      "conversion": "local MLX Q4 group_size=64, mask matched to German fine-tune",
+      "quantization": {
+        "bits": 4,
+        "group_size": 64
+      },
+      "quantized_modules_by_root": {
+        "decoder": 32,
+        "encoder": 128
+      },
+      "weight_files": {
+        "weights.safetensors": {
+          "bytes": 728455447,
+          "sha256": "c313a671a91e865ec2a866f6bbbb24dc0efbc3b8f241dba3037af4b81e6be9b1"
+        }
+      }
+    },
+    {
+      "name": "cohere-native",
+      "family": "cohere_asr",
+      "repository": "lyzgeorge/cohere-transcribe-03-2026-mlx-4bit",
+      "revision": "f2f6d89b1a300c51f48ae1ecb8523dbb58636cb0",
+      "quantization": {
+        "group_size": 64,
+        "bits": 4,
+        "mode": "affine"
+      },
+      "quantized_modules_by_root": {
+        "encoder": 433,
+        "encoder_decoder_proj": 1,
+        "log_softmax": 1,
+        "transf_decoder": 81
+      },
+      "weight_files": {
+        "model.safetensors": {
+          "bytes": 1507279570,
+          "sha256": "1032930782400476e56d4b852a750920ab49bd048f32eb68aeef5f651077e0a6"
+        }
+      }
+    }
+  ],
+  "summary": [
+    {
+      "engine": "voz-old",
+      "source_kind": "human",
+      "n_runs": 12,
+      "wer": 0.09467455621301775,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 8,
+        "correct": 0
+      },
+      "median_ms": 225.971021,
+      "p95_ms": 426.217625,
+      "rtfx": 59.22323922508222,
+      "median_load_ms": 357.127229,
+      "sampled_peak_rss_mib": 125.390625
+    },
+    {
+      "engine": "voz-old",
+      "source_kind": "public_fleurs",
+      "n_runs": 40,
+      "wer": 0.035555555555555556,
+      "digit_tokens": {
+        "reference": 10,
+        "hypothesis": 10,
+        "correct": 10
+      },
+      "median_ms": 254.383709,
+      "p95_ms": 351.923167,
+      "rtfx": 54.42691576901182,
+      "median_load_ms": 357.127229,
+      "sampled_peak_rss_mib": 125.390625
+    },
+    {
+      "engine": "voz-old",
+      "source_kind": "synthetic",
+      "n_runs": 60,
+      "wer": 0.02434782608695652,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 0,
+        "correct": 0
+      },
+      "median_ms": 217.34339549999999,
+      "p95_ms": 474.486375,
+      "rtfx": 63.59852113943454,
+      "median_load_ms": 357.127229,
+      "sampled_peak_rss_mib": 125.390625
+    },
+    {
+      "engine": "voz-new",
+      "source_kind": "human",
+      "n_runs": 12,
+      "wer": 0.08875739644970414,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 10,
+        "correct": 0
+      },
+      "median_ms": 89.447959,
+      "p95_ms": 313.714333,
+      "rtfx": 116.09916254089957,
+      "median_load_ms": 422.2476455,
+      "sampled_peak_rss_mib": 165.71875
+    },
+    {
+      "engine": "voz-new",
+      "source_kind": "public_fleurs",
+      "n_runs": 40,
+      "wer": 0.044444444444444446,
+      "digit_tokens": {
+        "reference": 10,
+        "hypothesis": 10,
+        "correct": 8
+      },
+      "median_ms": 97.593625,
+      "p95_ms": 180.673541,
+      "rtfx": 121.43991667855683,
+      "median_load_ms": 422.2476455,
+      "sampled_peak_rss_mib": 165.71875
+    },
+    {
+      "engine": "voz-new",
+      "source_kind": "synthetic",
+      "n_runs": 60,
+      "wer": 0.02782608695652174,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 18,
+        "correct": 0
+      },
+      "median_ms": 89.068792,
+      "p95_ms": 240.620416,
+      "rtfx": 131.14538716943093,
+      "median_load_ms": 422.2476455,
+      "sampled_peak_rss_mib": 165.71875
+    },
+    {
+      "engine": "parakeet-v3",
+      "source_kind": "human",
+      "n_runs": 12,
+      "wer": 0.11242603550295859,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 10,
+        "correct": 0
+      },
+      "median_ms": 186.00939604220912,
+      "p95_ms": 509.85491601750255,
+      "rtfx": 66.57170620014185,
+      "median_load_ms": 2284.6487289934885,
+      "sampled_peak_rss_mib": 764.140625
+    },
+    {
+      "engine": "parakeet-v3",
+      "source_kind": "public_fleurs",
+      "n_runs": 40,
+      "wer": 0.051111111111111114,
+      "digit_tokens": {
+        "reference": 10,
+        "hypothesis": 8,
+        "correct": 8
+      },
+      "median_ms": 252.53712499397807,
+      "p95_ms": 910.4015420307405,
+      "rtfx": 38.017933492995475,
+      "median_load_ms": 2284.6487289934885,
+      "sampled_peak_rss_mib": 764.140625
+    },
+    {
+      "engine": "parakeet-v3",
+      "source_kind": "synthetic",
+      "n_runs": 60,
+      "wer": 0.008695652173913044,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 0,
+        "correct": 0
+      },
+      "median_ms": 150.57235400308855,
+      "p95_ms": 700.9619589662179,
+      "rtfx": 58.04550998485847,
+      "median_load_ms": 2284.6487289934885,
+      "sampled_peak_rss_mib": 764.140625
+    },
+    {
+      "engine": "whisper-turbo",
+      "source_kind": "human",
+      "n_runs": 12,
+      "wer": 0.10059171597633136,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 6,
+        "correct": 0
+      },
+      "median_ms": 825.3429374890402,
+      "p95_ms": 1793.4391250018962,
+      "rtfx": 15.186403693974587,
+      "median_load_ms": 375.92393800150603,
+      "sampled_peak_rss_mib": 1818.71875
+    },
+    {
+      "engine": "whisper-turbo",
+      "source_kind": "public_fleurs",
+      "n_runs": 40,
+      "wer": 0.03777777777777778,
+      "digit_tokens": {
+        "reference": 10,
+        "hypothesis": 10,
+        "correct": 10
+      },
+      "median_ms": 832.7695204934571,
+      "p95_ms": 965.6223750207573,
+      "rtfx": 15.535443951225432,
+      "median_load_ms": 375.92393800150603,
+      "sampled_peak_rss_mib": 1818.71875
+    },
+    {
+      "engine": "whisper-turbo",
+      "source_kind": "synthetic",
+      "n_runs": 60,
+      "wer": 0.009565217391304347,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 0,
+        "correct": 0
+      },
+      "median_ms": 861.7708749952726,
+      "p95_ms": 2038.5758329648525,
+      "rtfx": 13.676901120298405,
+      "median_load_ms": 375.92393800150603,
+      "sampled_peak_rss_mib": 1818.71875
+    },
+    {
+      "engine": "whisper-large",
+      "source_kind": "human",
+      "n_runs": 12,
+      "wer": 0.10650887573964497,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 6,
+        "correct": 0
+      },
+      "median_ms": 1350.4358335048892,
+      "p95_ms": 3237.9071670002304,
+      "rtfx": 9.1621058570617,
+      "median_load_ms": 847.4086665082723,
+      "sampled_peak_rss_mib": 1540.640625
+    },
+    {
+      "engine": "whisper-large",
+      "source_kind": "public_fleurs",
+      "n_runs": 40,
+      "wer": 0.028888888888888888,
+      "digit_tokens": {
+        "reference": 10,
+        "hypothesis": 10,
+        "correct": 10
+      },
+      "median_ms": 1370.287208497757,
+      "p95_ms": 1784.405250044074,
+      "rtfx": 9.325165961400563,
+      "median_load_ms": 847.4086665082723,
+      "sampled_peak_rss_mib": 1540.640625
+    },
+    {
+      "engine": "whisper-large",
+      "source_kind": "synthetic",
+      "n_runs": 60,
+      "wer": 0.013043478260869565,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 0,
+        "correct": 0
+      },
+      "median_ms": 1436.9877705175895,
+      "p95_ms": 4015.2767499675974,
+      "rtfx": 7.671531873111557,
+      "median_load_ms": 847.4086665082723,
+      "sampled_peak_rss_mib": 1540.640625
+    },
+    {
+      "engine": "cohere",
+      "source_kind": "human",
+      "n_runs": 12,
+      "wer": 0.26627218934911245,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 8,
+        "correct": 0
+      },
+      "median_ms": 456.66016699397005,
+      "p95_ms": 1156.9960410124622,
+      "rtfx": 23.783283082706532,
+      "median_load_ms": 2706.334645510651,
+      "sampled_peak_rss_mib": 1774.390625
+    },
+    {
+      "engine": "cohere",
+      "source_kind": "public_fleurs",
+      "n_runs": 40,
+      "wer": 0.4177777777777778,
+      "digit_tokens": {
+        "reference": 10,
+        "hypothesis": 0,
+        "correct": 0
+      },
+      "median_ms": 583.589000016218,
+      "p95_ms": 1282.6750840176828,
+      "rtfx": 19.072387794953546,
+      "median_load_ms": 2706.334645510651,
+      "sampled_peak_rss_mib": 1774.390625
+    },
+    {
+      "engine": "cohere",
+      "source_kind": "synthetic",
+      "n_runs": 60,
+      "wer": 0.06434782608695652,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 0,
+        "correct": 0
+      },
+      "median_ms": 359.482541505713,
+      "p95_ms": 2093.212375009898,
+      "rtfx": 21.910123855193238,
+      "median_load_ms": 2706.334645510651,
+      "sampled_peak_rss_mib": 1774.390625
+    },
+    {
+      "engine": "whisper-german",
+      "source_kind": "human",
+      "n_runs": 12,
+      "wer": 0.10650887573964497,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 6,
+        "correct": 0
+      },
+      "median_ms": 858.6376039893366,
+      "p95_ms": 1859.3387909932062,
+      "rtfx": 14.652298457479514,
+      "median_load_ms": 455.7546454598196,
+      "sampled_peak_rss_mib": 1258.75
+    },
+    {
+      "engine": "whisper-german",
+      "source_kind": "public_fleurs",
+      "n_runs": 40,
+      "wer": 0.042222222222222223,
+      "digit_tokens": {
+        "reference": 10,
+        "hypothesis": 6,
+        "correct": 6
+      },
+      "median_ms": 876.366208482068,
+      "p95_ms": 990.447457996197,
+      "rtfx": 14.977010450676907,
+      "median_load_ms": 455.7546454598196,
+      "sampled_peak_rss_mib": 1258.75
+    },
+    {
+      "engine": "whisper-german",
+      "source_kind": "synthetic",
+      "n_runs": 60,
+      "wer": 0.008695652173913044,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 0,
+        "correct": 0
+      },
+      "median_ms": 871.2291664851364,
+      "p95_ms": 2024.0253749652766,
+      "rtfx": 13.455608402175777,
+      "median_load_ms": 455.7546454598196,
+      "sampled_peak_rss_mib": 1258.75
+    },
+    {
+      "engine": "whisper-turbo-q4",
+      "source_kind": "human",
+      "n_runs": 12,
+      "wer": 0.11834319526627218,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 8,
+        "correct": 0
+      },
+      "median_ms": 866.5499584749341,
+      "p95_ms": 1845.2114579849876,
+      "rtfx": 14.61434968003868,
+      "median_load_ms": 194.9633125332184,
+      "sampled_peak_rss_mib": 978.390625
+    },
+    {
+      "engine": "whisper-turbo-q4",
+      "source_kind": "public_fleurs",
+      "n_runs": 40,
+      "wer": 0.03777777777777778,
+      "digit_tokens": {
+        "reference": 10,
+        "hypothesis": 10,
+        "correct": 10
+      },
+      "median_ms": 865.3652085049544,
+      "p95_ms": 977.7490409906022,
+      "rtfx": 15.024934039175763,
+      "median_load_ms": 194.9633125332184,
+      "sampled_peak_rss_mib": 978.390625
+    },
+    {
+      "engine": "whisper-turbo-q4",
+      "source_kind": "synthetic",
+      "n_runs": 60,
+      "wer": 0.017391304347826087,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 20,
+        "correct": 0
+      },
+      "median_ms": 879.1723955073394,
+      "p95_ms": 2032.157166977413,
+      "rtfx": 13.409367575494514,
+      "median_load_ms": 194.9633125332184,
+      "sampled_peak_rss_mib": 978.390625
+    },
+    {
+      "engine": "cohere-native",
+      "source_kind": "human",
+      "n_runs": 12,
+      "wer": 0.11242603550295859,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 12,
+        "correct": 0
+      },
+      "median_ms": 521.6988959873561,
+      "p95_ms": 1329.2828340199776,
+      "rtfx": 24.519076432132824,
+      "median_load_ms": 1989.7348749800585,
+      "sampled_peak_rss_mib": 1770.3125
+    },
+    {
+      "engine": "cohere-native",
+      "source_kind": "public_fleurs",
+      "n_runs": 40,
+      "wer": 0.03777777777777778,
+      "digit_tokens": {
+        "reference": 10,
+        "hypothesis": 8,
+        "correct": 8
+      },
+      "median_ms": 526.3115204870701,
+      "p95_ms": 774.1980000282638,
+      "rtfx": 24.379100167324424,
+      "median_load_ms": 1989.7348749800585,
+      "sampled_peak_rss_mib": 1770.3125
+    },
+    {
+      "engine": "cohere-native",
+      "source_kind": "synthetic",
+      "n_runs": 60,
+      "wer": 0.008695652173913044,
+      "digit_tokens": {
+        "reference": 0,
+        "hypothesis": 0,
+        "correct": 0
+      },
+      "median_ms": 439.0380209952127,
+      "p95_ms": 1710.1816249778494,
+      "rtfx": 21.508443581289498,
+      "median_load_ms": 1989.7348749800585,
+      "sampled_peak_rss_mib": 1770.3125
+    }
+  ],
+  "bootstrap": [
+    {
+      "comparison": "voz-new minus voz-old",
+      "delta_percentage_points": 0.8888888888888888,
+      "paired_clip_bootstrap_95_interval_pp": [
+        -0.25975716991341985,
+        2.402979702829518
+      ],
+      "draws": 10000,
+      "seed": 0
+    },
+    {
+      "comparison": "whisper-german minus whisper-turbo-q4",
+      "delta_percentage_points": 0.4444444444444444,
+      "paired_clip_bootstrap_95_interval_pp": [
+        0.0,
+        1.008115428478331
+      ],
+      "draws": 10000,
+      "seed": 0
+    },
+    {
+      "comparison": "whisper-large minus whisper-turbo",
+      "delta_percentage_points": -0.8888888888888888,
+      "paired_clip_bootstrap_95_interval_pp": [
+        -2.3474791306586256,
+        0.24449877750611246
+      ],
+      "draws": 10000,
+      "seed": 0
+    }
+  ],
+  "excluded_preparation_run": true,
+  "adapted_cohere_exploratory_only": true,
+  "native_pcm_identical_to_main": true,
+  "annotation_runtime": {
+    "model": "Gemma 4 E4B Q4_0",
+    "llama_cpp_build": 11429,
+    "llama_cpp_commit": "d81235049",
+    "temperature": 0,
+    "thinking": false,
+    "labels": "automatic reference-only proposals, not human verified"
+  }
+}

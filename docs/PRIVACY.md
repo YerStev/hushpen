@@ -29,26 +29,21 @@ two things:
 
 1. **Model download** from huggingface.co when you install or choose
    *Download model*. A Hugging Face token is sent only if you have set `HF_TOKEN`.
-2. **Usage report** to `https://events.desertant.com/api/v1/ingest`, required by
-   the model license. It contains:
-   - a random installation ID, created by the SDK and stored in the app's
-     preferences (`defaults read io.github.yerstev.hushpen`),
-   - the number of transcriptions since the last report (live preview passes
-     count as transcriptions),
-   - the app ID (`io.github.yerstev.hushpen`) and version, the SDK name and version,
-   - "macOS" and the major macOS version,
-   - the time it was sent.
+2. **License requests** to `https://events.desertant.com/api/v1/license` and
+   `/api/v1/activate`, managed by the unmodified SDK 4.3.0 on model load.
+   The grant contains a random persistent installation ID, app identifier,
+   model name/version, SDK name/version and platform (`server` on macOS).
+   Activation sends the signed license token. If an external SDK API key is
+   configured, native requests include it in an Authorization header.
+   There is no audio, transcript, transcription count, app version or OS version
+   in these requests. Your IP address is visible to the receiving server.
+   The SDK stores installation identity and license state in preferences,
+   caches an activated license until its period ends and retries failed requests.
 
-   It contains no audio and no text. It is sent on the first dictation of each
-   day (UTC) and when the service stops or the model is replaced; counts in
-   between are carried to the next report. Your IP address is visible to the
-   server, as with any request. Desert Ant Labs is responsible for this data
-   under its [license](https://license.desertant.com/1.0).
-
-hushpen does not disable or alter the report. Because the service that records
-audio also has network access, the guarantee that no audio or text is sent rests
-on the code, not on an operating-system block. `scripts/audit-sdk-network.sh`
-checks the pinned SDK's network code and report fields before each build.
+hushpen does not disable or alter licensing. The source review is documented in
+[TECHNICAL.md](TECHNICAL.md). The audit checks the reviewed source hashes,
+network file inventory and license payloads. This is a code-level guarantee,
+not an operating-system network block or packet-capture verification.
 
 ## Permissions
 

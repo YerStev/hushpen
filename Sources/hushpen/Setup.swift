@@ -9,7 +9,7 @@ enum Setup {
         var value: Result<ModelConfig, Error>?
     }
 
-    private static let modelSize = "about 470 MB"
+    private static let modelSize = "about 340 MB"
 
     static func run() -> Never {
         let app = NSApplication.shared
@@ -74,7 +74,7 @@ enum Setup {
                     let action = show("About hushpen \(Attribution.toolVersion)", """
                         Speech recognition runs on this Mac with the Voz model by Desert Ant Labs. Audio and text are not uploaded or saved.
 
-                        The model's SDK sends a usage report to Desert Ant Labs: a random installation ID, the number of transcriptions, timestamps, the app identifier and version, the SDK version, and macOS name and major version. No audio and no text.
+                        The model's SDK requests and activates a license with Desert Ant Labs: a random installation ID, app identifier, model and SDK versions, and platform. No audio, text, or transcription counts.
 
                         hushpen is MIT-licensed. Voz and its SDK are source-available under the Desert Ant Labs license.
                         """, ["Back", "Model license", "desertant.com"])
@@ -114,7 +114,7 @@ enum Setup {
         guard picker.runModal() == .OK, let directory = picker.url else { return }
         let label = NSTextField(labelWithString: "Checking the model. The first check can take a minute.")
         save(runWithProgress(title: "Checking model", label: label) {
-            try ModelImport.prepare(directory: directory)
+            try await ModelImport.prepare(directory: directory)
         })
     }
 

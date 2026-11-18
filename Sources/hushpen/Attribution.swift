@@ -2,8 +2,8 @@ import Foundation
 
 enum Attribution {
     static let toolVersion = "0.3.0"
-    static let sdkVersion = "desert-ant-core 3.5.0"
-    static let modelRevision = "Voz v0.1.0"
+    static let sdkVersion = "desert-ant-core 4.3.0"
+    static let modelRevision = "Voz v0.5.0"
 
     static var versionText: String {
         """

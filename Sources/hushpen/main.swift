@@ -222,7 +222,7 @@ case "--uninstall-agent":
 
 case "--download-model":
     guard arguments.count == 1 else { fail(ToolError(.usage, "Usage: hushpen --download-model")) }
-    print("Downloading \(Attribution.modelRevision) (about 470 MB) from huggingface.co …")
+    print("Downloading \(Attribution.modelRevision) (about 340 MB) from huggingface.co …")
     let reporter = ProgressReporter()
     do {
         let config = try await ModelImport.download { reporter.report($0) }
@@ -245,7 +245,7 @@ case "--set-model":
         fail(ToolError(.modelMissing, "Not a folder: \(directory.path)"))
     }
     do {
-        let config = try ModelImport.prepare(directory: directory)
+        let config = try await ModelImport.prepare(directory: directory)
         try Config.saveModel(config)
         let digest = config.digest
         succeed("""
@@ -276,10 +276,10 @@ case "--transcribe-file":
             let text = result.text.trimmingCharacters(in: .whitespacesAndNewlines)
             print(text)
         } catch {
-            await Telemetry.flushPendingUsage(keeping: voz)
+            await Telemetry.flushPendingLicense(keeping: voz)
             throw error
         }
-        await Telemetry.flushPendingUsage(keeping: voz)
+        await Telemetry.flushPendingLicense(keeping: voz)
         exit(ExitCode.success.rawValue)
     } catch let error as ToolError {
         fail(error)
@@ -294,6 +294,7 @@ case "--verify":
     var lines: [String] = []
     if let model = try? Config.loadModel() {
         lines.append(row("Model", model.directory))
+        lines.append(row("Revision", model.revision))
         if let actual = try? ModelDigest.compute(directory: URL(fileURLWithPath: model.directory)) {
             lines.append(row("Checksum", actual == model.digest ? "\(actual) (matches)" : "\(actual) (MISMATCH, expected \(model.digest))"))
         } else {
@@ -310,7 +311,7 @@ case "--verify":
     lines.append(row("Service", LaunchAgent.isInstalled
         ? (ServiceLock.isHeldElsewhere ? "running" : "installed, not running")
         : "not installed"))
-    lines.append(row("Usage reporting", Telemetry.statusText))
+    lines.append(row("License requests", Telemetry.statusText))
     lines.append(row("SDK", Attribution.sdkVersion))
     lines.append(row("Log", LaunchAgent.logURL.path))
     succeed(lines.joined(separator: "\n"))

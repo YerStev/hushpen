@@ -7,7 +7,7 @@ let package = Package(
     name: "hushpen",
     platforms: [.macOS(.v14)],
     dependencies: [
-        .package(url: "https://github.com/Desert-Ant-Labs/desert-ant-core.git", exact: "3.5.0")
+        .package(url: "https://github.com/Desert-Ant-Labs/desert-ant-core.git", exact: "4.3.0")
     ],
     targets: [
         // llama.cpp for the optional text cleanup, pinned to the release the

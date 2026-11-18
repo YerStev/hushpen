@@ -1,4 +1,6 @@
+Sources/CoreAndroidTests/CoreBridge.swift
+Sources/HostBridge/JNI.swift
 Sources/ModelStore/FoundationBackend.swift
 Sources/ModelStore/XetTransport.swift
 Sources/PlatformSupport/HTTPClient.swift
-Sources/Usage/Transport.swift
+Sources/Usage/Licensing.swift
